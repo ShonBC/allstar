@@ -13,7 +13,7 @@ Project Codename: AllStar
 A 2 Page Written proposal can be found [here](docs/proposal/ENPM808X_Final_Project_Proposal.pdf)
 
 ## Product Backlog:
-All backlog is being tracked [here.](https://docs.google.com/spreadsheets/d/1vRb-TPH80gHVCSxqQvktSz7vxENiAfxLXcteNu3wBJ8/edit#gid=0)
+All backlog is being tracked [here.](https://docs.google.com/spreadsheets/d/1sR7KOjVB8bDje8J2QfeGQo_Tc-OPGAuAFRhpCgdOBeA/edit#gid=0)
 
 ## Iteration Planning Meetings & Scrum Meeting Notes:
 Can be found [here.](https://docs.google.com/document/d/1qceQ_69V6yU-FIa4jNwpUkPDyW1q20VkOy0OK4wDBFg/edit?usp=sharing )
@@ -46,19 +46,19 @@ TO-DO
 
 # UML DIAGRAMS:
 <p align = "center">
-<img src="./docs/uml_diagrams/Initial/MarchingBandSwarmActivityDiagram.drawio.png" alt="Logo"/>
+<img src="./docs/uml_diagrams/initial/MarchingBandSwarmActivityDiagram.drawio.png" alt="Logo"/>
 
 <p align = "center"><em>Figure 1. Activity Diagram</em></p>
 </p>
 
 <p align = "center">
-<img src="./docs/uml_diagrams/Initial/MarchingBandSwarmClassDiagram.png" alt="Logo"/>
+<img src="./docs/uml_diagrams/initial/MarchingBandSwarmClassDiagram.png" alt="Logo"/>
 
 <p align = "center"><em>Figure 2. Class Diagram</em></p>
 </p>
 
 <p align = "center">
-<img src="./docs/uml_diagrams/" alt="Logo"/>
+<img src="./docs/uml_diagrams/initial/MarchingBandSwarmQuadChart.png" alt="Logo"/>
 
 <p align = "center"><em>Figure 3. Quad Chart</em></p>
 </p>
@@ -107,6 +107,7 @@ The final deliverable would be a ROS package that would take in a B&W image path
 ## Work Packages with licenses:
 C++ 11 and above will be the primary language for the entire codebase. We will be utilizing Cmake version 3.2.1 for our build system. For processing our video input, OpenCV version 4.0.0 (Apache 2 license) will be used. Eigen 3 will also be used for linear algebra which uses the MPL2 license. We will also be utilizing ROS Melodic & Gazebo on Ubuntu 18.04 for our multi-robot system which uses the BSD License. This includes tf, odom, roscpp, rospy, nav_msgs, geometry_msgs, std_msgs, nodelet, rostest will use gtest, google mock and turtlebot package. We also plan to use the Tuw_multi_robot package for routing the robots. This package is licensed as BSD. 
 References:
+
 [1] [NFL Cheerleading](https://en.wikipedia.org/wiki/National_Football_League_Cheerleading#cite_note-2)
 
 [2] [Tuw_multi_robot packages](https://github.com/tuw-robotics/tuw_multi_robot)

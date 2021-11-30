@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Initialize arguments -->
+    <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+    <arg name="world" default="1"/>
+    <arg name="robot_" default="4"/>
+    <arg name="robot_name" default="$(eval 'robot_' + str(arg('robot_') - 1))"/>
+    <arg name="x_pos" default="$(eval arg('robot_') - 1)"/>
+    <arg name="y_pos" default="0.0"/>
+    <arg name="z_pos" default="0.0"/>
+
+    <!-- Open empty world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" if="$(eval arg('world') > 0)">
+        <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/empty.world"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+    <!-- Spawn TurtleBot3 in a labled namespace -->
+    <group ns="$(eval 'robot_' + str(arg('robot_') - 1))">
+        
+        <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+        
+        <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" 
+        args="-urdf -model $(arg robot_name) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+
+    </group>
+
+  
+    <!-- Recursively start new node -->
+    <include file="$(find allstar)/launch/swarm.launch" if="$(eval arg('robot_') - 1 > 0)">
+        <arg name="robot_" value="$(eval arg('robot_') - 1)"/>
+        <arg name="world" value="0"/>
+    </include>
+
+</launch>

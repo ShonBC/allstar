@@ -68,7 +68,6 @@ class ImageProcessor {
      * @param frame Image to be processes
      */
     explicit ImageProcessor(cv::Mat frame);
-
     /**
      * @brief Perform Canny edge detection to define a binary image with the outline of the desired shape
      * 

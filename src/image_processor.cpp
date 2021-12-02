@@ -50,25 +50,25 @@ std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
 }
 
 int ImageProcessor::GetHeight() {
-    // To-Do
+    return height_;
 }
 
 int ImageProcessor::GetWidth() {
-    // To-Do
+    return width_;
 }
 
 cv::Mat ImageProcessor::GetFrame() {
-    // To-Do
+    return frame_;
 }
 
 int ImageProcessor::GetGoalLocationCount() {
-    // To-Do
+    return num_goal_locations_;
 }
 
 std::vector<std::vector<double>> ImageProcessor::GetGoalPoints() {
-    // To-Do
+    return goal_points_;
 }
 
 int ImageProcessor::GetKernalSize() {
-    // To-Do
+    return kernal_size_;
 }

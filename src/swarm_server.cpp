@@ -29,11 +29,11 @@
 #include "../include/swarm_server.h"
 
 
+
 void SwarmServer::InitiateMap() {
     // To-Do
     ros::NodeHandle n;
-    ros::Publisher chatter_pub =
-        n.advertise<nav_msgs::OccupancyGrid>("map", 1000);
+    ros::Publisher chatter_pub = n.advertise<nav_msgs::OccupancyGrid>("map", 1000);
     // ros::Subscriber chatter_sub = n.subscribe("map", 1000, callback);
     ros::Rate loop_rate(10);
     // ros::spin();
@@ -65,4 +65,33 @@ void SwarmServer::AssignInitPos() {
 
 void SwarmServer::AssignGoals(std::vector<std::vector<double>> goal_points) {
     // To-Do
+    ros::NodeHandle n;
+    ros::Publisher chatter_pub = n.advertise<tuw_multi_robot_msgs::RobotGoalsArray>("goals", 1000);
+    ros::Rate loop_rate(10);
+    tuw_multi_robot_msgs::RobotGoalsArray robot_goals_array;
+    geometry_msgs::Pose pose;
+    std::string name;
+
+    while (ros::ok()) {
+        
+        for (int i = 0; i < goal_points.size(); i++) {
+            tuw_multi_robot_msgs::RobotGoals robot;
+
+            name = "robot_" + std::to_string(i);
+            robot.robot_name = name;
+            pose.position.x = goal_points[i][0];
+            pose.position.y = goal_points[i][1];
+            robot.destinations.push_back(pose);
+            robot_goals_array.robots.push_back(robot);
+        }
+
+        chatter_pub.publish(robot_goals_array);
+
+        ros::spinOnce();
+        // std::cout << "working" << std::endl;
+
+        loop_rate.sleep();
+    }
+
+
 }

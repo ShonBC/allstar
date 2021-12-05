@@ -11,6 +11,10 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  nav_msgs
+  tuw_multi_robot_msgs
+  OpenCV
+  Eigen3
 )
 
 ## System dependencies are found with CMake's conventions
@@ -103,10 +107,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES allstar
-#  CATKIN_DEPENDS roscpp rospy std_msgs
-#  DEPENDS system_lib
+ #INCLUDE_DIRS include
+ #LIBRARIES allstar 
+ #CATKIN_DEPENDS roscpp rospy std_msgs nav_msgs
+ #DEPENDS system_lib
 )
 
 ###########
@@ -118,6 +122,8 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -149,6 +155,8 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+add_executable(main src/main.cpp src/swarm_server.cpp src/image_processor.cpp)
+target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${EIGEN3_LIBRARIES})
 
 #############
 ## Install ##
@@ -204,3 +212,4 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+

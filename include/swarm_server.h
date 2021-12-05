@@ -30,8 +30,15 @@
 
 #include <ros/ros.h>
 #include <vector>
+#include <string>
+
+#include <nav_msgs/OccupancyGrid.h>
+#include <std_msgs/Int8.h>
+
+#include <tuw_multi_robot_msgs/RobotGoalsArray.h>
 
 class SwarmServer {
+ public:
     int num_agents;
 
     /**
@@ -50,14 +57,15 @@ class SwarmServer {
      * @brief Assign initial positions to each robot in the swarm
      * 
      */
+
     void AssignInitPos();
 
     /**
      * @brief Assign goal positions to each robot in the swarm
 
-     * 
-     * @param goal_points 
-     */
+        * 
+        * @param goal_points 
+        */
     void AssignGoals(std::vector<std::vector<double>> goal_points);
 
     /**
@@ -65,4 +73,6 @@ class SwarmServer {
      * 
      */
     ~SwarmServer() {}
+
+
 };

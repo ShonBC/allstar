@@ -1,8 +1,19 @@
+
+#include "../include/swarm_server.h"
 #include "../include/image_processor.h"
 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/core/core.hpp>
+// int main(int argc, char **argv) {
+//     ros::init(argc, argv, "walker");
+
+//     std::vector<std::vector<double>> input = {
+//         {1,1},
+//         {3,4},
+//         {5,5},
+//         {4,8}
+//     };
+//     SwarmServer swarm;
+//     // swarm.InitiateMap();
+//     swarm.AssignGoals(input);
 
 int main() {
   cv::Mat image = cv::imread("/home/sameer/catkin_ws/src/allstar/src/test.jpg");

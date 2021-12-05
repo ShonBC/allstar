@@ -11,6 +11,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  nav_msgs
+  tuw_multi_robot_msgs
   OpenCV
   Eigen3
 )
@@ -107,7 +109,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
  #INCLUDE_DIRS include
  #LIBRARIES allstar 
- #CATKIN_DEPENDS roscpp rospy std_msgs 
+ #CATKIN_DEPENDS roscpp rospy std_msgs nav_msgs
  #DEPENDS system_lib
 )
 
@@ -138,8 +140,6 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/allstar_node.cpp)
-# add_executable(main src/main.cpp src/image_processor.cpp)
-# target_link_libraries(main ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

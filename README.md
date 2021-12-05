@@ -25,12 +25,38 @@ All backlog is being tracked [here.](https://docs.google.com/spreadsheets/d/1sR7
 Can be found [here.](https://docs.google.com/document/d/1qceQ_69V6yU-FIa4jNwpUkPDyW1q20VkOy0OK4wDBFg/edit?usp=sharing )
 ***
 
-# Build and Run Instructions:
-Clone repo:
+# Build and Run Instructions for running the protoyupe:
 
     git clone https://github.com/ShonBC/allstar
+    git checkout prototype
 
-TO-DO: ADD BUILD AND RUN INSTRUCTIONS
+    #Install tuw package
+    sudo apt install libdxflib-dev
+    export ROS_VERSION=melodic 
+    sudo apt install ros-$ROS_VERSION-map-server
+    sudo apt install ros-$ROS_VERSION-stage-ros
+    cd ~/catkin_ws/src
+    git clone --branch $ROS_VERSION git@github.com:tuw-robotics/tuw_geometry.git 
+    git clone git@github.com:tuw-robotics/tuw_msgs.git 
+    cd tuw_msgs
+    git checkout melodic
+    cd ..
+    git clone --branch $ROS_VERSION git@github.com:tuw-robotics/tuw_multi_robot.git 
+    cd tuw_multi_robot
+    mv -v ~/catkin_ws/src/tuw_multi_robot/* ~/catkin_ws/src/
+
+    #Build the package
+    cd ~/catkin_ws/
+    catkin_make
+
+    #Run the package
+    Open 2 terminals
+    cd ~/catkin_ws/
+    source devel/setup.bash
+    roslaunch allstar swarm.launch
+    roslaunch tuw_multi_robot_demo demo.launch room:=cave cfg:=robot_2
+
+    #
 
 Generate cppcheck, cpplint and valgrind results and store in a text file in /results directory:
 

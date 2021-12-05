@@ -41,6 +41,22 @@ void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {
 }
 
 cv::Mat ImageProcessor::GetEdges() {
+  cv::Mat contours;
+  cv::Mat gray_image;
+
+  cvtColor(this->frame_, gray_image, cv::COLOR_BGR2GRAY);
+
+  cv::Canny(this->frame_, contours, 10, 350);
+
+  cv::namedWindow("Image");
+  cv::imshow("Image", this->frame_);
+
+  cv::namedWindow("Gray");
+  cv::imshow("Gray", gray_image);
+
+  cv::namedWindow("Canny");
+  cv::imshow("Canny", contours);
+  cv::waitKey(0);
 }
 
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(

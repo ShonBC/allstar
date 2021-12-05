@@ -33,6 +33,8 @@
 #include <string>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/core/core.hpp>
+
 
 /**
  * @brief Class to parse an image and define goal locations in a map.

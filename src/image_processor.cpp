@@ -28,6 +28,10 @@
 
 #include "../include/image_processor.h"
 
+ImageProcessor::ImageProcessor(cv::Mat img) {
+  this->frame_ = img;
+}
+
 void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
     // To-Do
 }
@@ -37,7 +41,22 @@ void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {
 }
 
 cv::Mat ImageProcessor::GetEdges() {
-    // To-Do
+  cv::Mat contours;
+  cv::Mat gray_image;
+
+  cvtColor(this->frame_, gray_image, cv::COLOR_BGR2GRAY);
+
+  cv::Canny(this->frame_, contours, 10, 350);
+
+  cv::namedWindow("Image");
+  cv::imshow("Image", this->frame_);
+
+  cv::namedWindow("Gray");
+  cv::imshow("Gray", gray_image);
+
+  cv::namedWindow("Canny");
+  cv::imshow("Canny", contours);
+  cv::waitKey(0);
 }
 
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(

@@ -28,6 +28,10 @@
 
 #include "../include/image_processor.h"
 
+ImageProcessor::ImageProcessor(cv::Mat img) {
+  this->frame_ = img;
+}
+
 void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
     // To-Do
 }
@@ -37,7 +41,6 @@ void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {
 }
 
 cv::Mat ImageProcessor::GetEdges() {
-    // To-Do
 }
 
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(

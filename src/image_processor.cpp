@@ -28,6 +28,10 @@
 
 #include "../include/image_processor.h"
 
+ImageProcessor::ImageProcessor(cv::Mat img) {
+  this->frame_ = img;
+}
+
 void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
     // To-Do
 }
@@ -37,7 +41,22 @@ void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {
 }
 
 cv::Mat ImageProcessor::GetEdges() {
-    // To-Do
+  cv::Mat contours;
+  cv::Mat gray_image;
+
+  cvtColor(this->frame_, gray_image, cv::COLOR_BGR2GRAY);
+
+  cv::Canny(this->frame_, contours, 10, 350);
+
+  cv::namedWindow("Image");
+  cv::imshow("Image", this->frame_);
+
+  cv::namedWindow("Gray");
+  cv::imshow("Gray", gray_image);
+
+  cv::namedWindow("Canny");
+  cv::imshow("Canny", contours);
+  cv::waitKey(0);
 }
 
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
@@ -50,25 +69,25 @@ std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
 }
 
 int ImageProcessor::GetHeight() {
-    // To-Do
+    return height_;
 }
 
 int ImageProcessor::GetWidth() {
-    // To-Do
+    return width_;
 }
 
 cv::Mat ImageProcessor::GetFrame() {
-    // To-Do
+    return frame_;
 }
 
 int ImageProcessor::GetGoalLocationCount() {
-    // To-Do
+    return num_goal_locations_;
 }
 
 std::vector<std::vector<double>> ImageProcessor::GetGoalPoints() {
-    // To-Do
+    return goal_points_;
 }
 
 int ImageProcessor::GetKernalSize() {
-    // To-Do
+    return kernal_size_;
 }

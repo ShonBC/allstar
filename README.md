@@ -1,4 +1,10 @@
 # allstar
+
+[![License: BSD-3](https://img.shields.io/badge/BSD-3)](https://opensource.org/licenses/BSD-3-Clause)
+
+
+---
+
 ROS package for swarm robotics.
 
 Project Codename: AllStar

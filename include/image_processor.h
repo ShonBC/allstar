@@ -1,5 +1,5 @@
 /**
- * @file image_processor.cpp
+ * @file image_processor.h
  * @author Shon Cortes (scortes3@umd.edu), Sameer Pusegaonkar (sameer@umd.edu), Pooja Kabra (pkabra@terpmail.umd.edu)
  * @brief Class to parse an image and define goal locations in a map.
  * @version 0.1

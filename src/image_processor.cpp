@@ -53,6 +53,10 @@ cv::Mat ImageProcessor::GetEdges() {
   cv::Mat contours;
   cv::Mat gray_image;
 
+  cv::resize(this->frame_, this->frame_, cv::Size(500, 500), cv::INTER_LINEAR);
+  this->height_ = 500;
+  this->width_ = 500;
+
   cvtColor(this->frame_, gray_image, cv::COLOR_BGR2GRAY);
 
   cv::Canny(this->frame_, contours, 10, 350);

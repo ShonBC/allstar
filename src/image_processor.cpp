@@ -25,11 +25,20 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
  */
-
+#include <ros/console.h>
 #include "../include/image_processor.h"
 
 ImageProcessor::ImageProcessor(cv::Mat img) {
   this->frame_ = img;
+  this->height_ = img.size().height;
+  this->width_ = img.size().width;
+  this->kernal_size_ = 3;
+  ROS_INFO_STREAM("Image loaded!");
+  ROS_INFO_STREAM(this->height_ << " pixels :Image height");
+  ROS_INFO_STREAM(this->width_ << " pixels :Image width");
+  ROS_INFO_STREAM(this->kernal_size_ << "x" << this->kernal_size_ << " : Kernal size");
+  ROS_DEBUG_STREAM(this->height_ << " pixels :Image height");
+  ROS_DEBUG_STREAM(this->width_ << " pixels :Image width");
 }
 
 void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {

@@ -74,7 +74,15 @@ cv::Mat ImageProcessor::GetEdges() {
 
   cv::namedWindow("Canny");
   cv::imshow("Canny", contours);
+  this->frame_ = contours;
   cv::waitKey(0);
+
+  for ( auto i  = 0; i < this->height_; i++ ) {
+    for ( auto j = 0; j < this->width_; j++ ) {
+      ROS_DEBUG_STREAM((int)contours.at<uchar>(i, j)<< ":Color, " << i << ":i, " << j << ":j");
+    }
+  }
+  return contours;
 }
 
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(

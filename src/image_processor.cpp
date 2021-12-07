@@ -62,7 +62,7 @@ cv::Mat ImageProcessor::GetEdges() {
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
                                         int num_agents, cv::Mat binary_image) {
     GetGoalPoints(binary_image);
-    int step_size = 1;  // kernal step size
+    int step_size = 2;  // kernal step size
 
     if (num_goal_locations_ == num_agents) {
         // If num_goal_locations equals num_agents return vector of goal points

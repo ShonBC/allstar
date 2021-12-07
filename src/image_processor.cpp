@@ -46,7 +46,12 @@ void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
 }
 
 void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {
-    // To-Do
+  std::vector<std::vector<double>> new_points;
+  for ( auto i = 0; i < this->goal_points_.size(); i++ ) {
+    if ( i <= num_agents ) {
+        new_points.push_back(this->goal_points_[i]);
+    }
+  }
 }
 
 cv::Mat ImageProcessor::GetEdges() {

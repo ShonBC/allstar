@@ -91,7 +91,20 @@ std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
 }
 
 std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
-    // To-Do
+  std::vector<std::vector<double>> transformed_points_;
+  for ( auto points : this->goal_points_ ) {
+    std::vector<double>new_point;
+    auto x = points[0];
+    auto y = points[1];
+    double new_x = x/20;
+    double new_y = -y/20;
+    ROS_INFO_STREAM(x << ": ImageX, " << y << ": ImageY");
+    ROS_INFO_STREAM(new_x << ": MapX, " << new_y << ": MapY");
+    new_point.push_back(new_x);
+    new_point.push_back(new_y);
+    transformed_points_.push_back(new_point);
+  }
+  return transformed_points_;
 }
 
 int ImageProcessor::GetHeight() {

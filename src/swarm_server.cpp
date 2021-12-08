@@ -31,61 +31,60 @@
 
 
 void SwarmServer::InitiateMap() {
-    // To-Do
-    ros::NodeHandle n;
-    ros::Publisher chatter_pub = n.advertise<nav_msgs::OccupancyGrid>("map", 1000);
-    // ros::Subscriber chatter_sub = n.subscribe("map", 1000, callback);
-    ros::Rate loop_rate(10);
-    // ros::spin();
-    std::vector<int8_t> vec(250000, 0);
-    while (ros::ok()) {
-        nav_msgs::OccupancyGrid msg;
-        msg.info.height = 500;
-        msg.info.width = 500;
-        msg.info.origin.orientation.w = 1;
-        msg.info.origin.orientation.x = 0;
-        msg.info.origin.orientation.y = 0;
-        msg.info.origin.orientation.z = 0;
-        msg.info.origin.position.x = 0;
-        msg.info.origin.position.y = 0;
-        msg.info.origin.position.z = 0;
-        msg.data = vec;
-        chatter_pub.publish(msg);
+  // To-Do
+  ros::NodeHandle n;
+  ros::Publisher chatter_pub = n.advertise<nav_msgs::OccupancyGrid>("map", 1000);
+  // ros::Subscriber chatter_sub = n.subscribe("map", 1000, callback);
+  ros::Rate loop_rate(10);
+  // ros::spin();
+  std::vector<int8_t> vec(250000, 0);
+  while (ros::ok()) {
+    nav_msgs::OccupancyGrid msg;
+    msg.info.height = 500;
+    msg.info.width = 500;
+    msg.info.origin.orientation.w = 1;
+    msg.info.origin.orientation.x = 0;
+    msg.info.origin.orientation.y = 0;
+    msg.info.origin.orientation.z = 0;
+    msg.info.origin.position.x = 0;
+    msg.info.origin.position.y = 0;
+    msg.info.origin.position.z = 0;
+    msg.data = vec;
+    chatter_pub.publish(msg);
 
-        ros::spinOnce();
-        // std::cout << "working" << std::endl;
+    ros::spinOnce();
+    // std::cout << "working" << std::endl;
 
-        loop_rate.sleep();
-    }
+    loop_rate.sleep();
+  }
 }
 
 void SwarmServer::AssignInitPos() {
-    // To-do
+  // To-do
 }
 
 void SwarmServer::AssignGoals(std::vector<std::vector<double>> goal_points) {
-    // To-Do
-    ros::NodeHandle n;
-    ros::Publisher chatter_pub = n.advertise<tuw_multi_robot_msgs::RobotGoalsArray>("goals", 1000);
-    ros::Rate loop_rate(10);
-    tuw_multi_robot_msgs::RobotGoalsArray robot_goals_array;
-    robot_goals_array.header.frame_id = "map";
-    geometry_msgs::Pose pose;
-    std::string name;
-    int counter = 0;
-    for (int i = 0; i < goal_points.size(); i++) {
-        tuw_multi_robot_msgs::RobotGoals robot;
-        name = "robot_" + std::to_string(i);
-        robot.robot_name = name;
-        pose.position.x = goal_points[i][0];
-        pose.position.y = goal_points[i][1];
-        robot.destinations.push_back(pose);
-        robot_goals_array.robots.push_back(robot);
-    }
-    while (counter < 2) {
-        chatter_pub.publish(robot_goals_array);
-        ros::spinOnce();
-        loop_rate.sleep();
-        counter++;
-    }
+  ros::NodeHandle n;
+  ros::Publisher chatter_pub = n.advertise<tuw_multi_robot_msgs::RobotGoalsArray>("goals", 1000);
+  ros::Rate loop_rate(10);
+  tuw_multi_robot_msgs::RobotGoalsArray robot_goals_array;
+  robot_goals_array.header.frame_id = "map";
+  geometry_msgs::Pose pose;
+  std::string name;
+  int counter = 0;
+  for (int i = 0; i < goal_points.size(); i++) {
+    tuw_multi_robot_msgs::RobotGoals robot;
+    name = "robot_" + std::to_string(i);
+    robot.robot_name = name;
+    pose.position.x = goal_points[i][0];
+    pose.position.y = goal_points[i][1];
+    robot.destinations.push_back(pose);
+    robot_goals_array.robots.push_back(robot);
+  }
+  while (counter < 2) {
+    chatter_pub.publish(robot_goals_array);
+    ros::spinOnce();
+    loop_rate.sleep();
+    counter++;
+  }
 }

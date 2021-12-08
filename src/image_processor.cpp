@@ -72,7 +72,7 @@ void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {
   std::vector<std::vector<double>> new_points;
   for ( auto i = 0; i < this->goal_points_.size(); i++ ) {
     if ( i < num_agents ) {
-        new_points.push_back(this->goal_points_[i]);
+      new_points.push_back(this->goal_points_[i]);
     }
   }
   goal_points_ = new_points;
@@ -136,13 +136,13 @@ std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
     } else {
       ROS_DEBUG_STREAM("Equal or lesser number of goal locations!");
       RefineGoalPoints(num_agents, binary_image);
-        }
+    }
   } else {
-      // Increase kernal size to reduce the number of goal locations
-      kernal_size_ += step_size;
-      ROS_DEBUG_STREAM("Increased the size of the kernal!");
-      RefineGoalPoints(num_agents, binary_image);
-      }
+    // Increase kernal size to reduce the number of goal locations
+    kernal_size_ += step_size;
+    ROS_DEBUG_STREAM("Increased the size of the kernal!");
+    RefineGoalPoints(num_agents, binary_image);
+  }
   ROS_INFO_STREAM("Got " << goal_points_.size() << " goal points!");
   return goal_points_;
 }
@@ -167,23 +167,23 @@ std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
 }
 
 int ImageProcessor::GetHeight() {
-    return height_;
+  return height_;
 }
 
 int ImageProcessor::GetWidth() {
-    return width_;
+  return width_;
 }
 
 cv::Mat ImageProcessor::GetFrame() {
-    return frame_;
+  return frame_;
 }
 
 int ImageProcessor::GetGoalLocationCount() {
-    return num_goal_locations_;
+  return num_goal_locations_;
 }
 
 std::vector<std::vector<double>> ImageProcessor::GetGoalPoints() {
-    return goal_points_;
+  return goal_points_;
 }
 
 int ImageProcessor::GetKernalSize() {

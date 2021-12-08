@@ -1,4 +1,3 @@
-
 #include "../include/swarm_server.h"
 #include "../include/image_processor.h"
 
@@ -16,9 +15,11 @@
 //     swarm.AssignGoals(input);
 
 int main() {
-  cv::Mat image = cv::imread("/home/sameer/catkin_ws/src/allstar/src/test.jpg");
-  cv::imshow("window", image);
-  cv::waitKey(0);
+  cv::Mat image = cv::imread("/home/luna/catkin_ws_make/src/allstar/src/test.jpg");
+  // cv::imshow("window", image);
+  // cv::waitKey(0);
   auto img = new ImageProcessor(image);
-  img->GetEdges();
+  auto countours = img->GetEdges();
+  img->GetGoalPoints();
+  img->RefineGoalPoints(50, countours);
 }

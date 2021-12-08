@@ -42,7 +42,23 @@ ImageProcessor::ImageProcessor(cv::Mat img) {
 }
 
 void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
-    // To-Do
+    // Pass Kernal over image
+    for (int i = 0; i < height_; i = i + kernal_size_) {
+        for (int j = 0; j < width_; j = j + kernal_size_) {
+            cv::Mat kern_window = binary_image(cv::Range(i, i + kernal_size_),
+                                                cv::Range(j, j + kernal_size_));
+
+            if (cv::countNonZero(kern_window) > 0) {
+                /* If edge is within kernal, add location of center of kernal
+                *  to vector of goal locations
+                */
+                double x_center = j + (kernal_size_  / 2);
+                double y_center =  i + (kernal_size_  / 2);
+                std::vector<double> center{x_center, y_center};
+                goal_points_.push_back(center);
+            }
+        }
+    }
 }
 
 void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {
@@ -87,7 +103,31 @@ cv::Mat ImageProcessor::GetEdges() {
 
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
                                         int num_agents, cv::Mat binary_image) {
-    // To-Do
+    GetGoalPoints(binary_image);
+    int step_size = 2;  // kernal step size
+
+    if (num_goal_locations_ == num_agents) {
+        // If num_goal_locations equals num_agents return vector of goal points
+        return goal_points_;
+    } else if (num_goal_locations_< num_agents) {
+        // Reduce kernal size to increase the number of goal locations
+        kernal_size_ -= step_size;
+        GetGoalPoints(binary_image);
+
+        if (num_goal_locations_ > num_agents) {
+            /* Potential infinite loop due to kernal step size,
+             * remove excess goal points
+             */
+            RemoveExcessGoalPoints(num_agents);
+            return goal_points_;
+        } else {
+            RefineGoalPoints(num_agents, binary_image);
+            }
+    } else {
+        // Increase kernal size to reduce the number of goal locations
+        kernal_size_ += step_size;
+        RefineGoalPoints(num_agents, binary_image);
+        }
 }
 
 std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {

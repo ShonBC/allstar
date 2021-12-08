@@ -110,31 +110,36 @@ cv::Mat ImageProcessor::GetEdges() {
 
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
                                         int num_agents, cv::Mat binary_image) {
+  GetGoalPoints(binary_image);
+  int step_size = 2;  // kernal step size
+  if (num_goal_locations_ == num_agents) {
+    // If num_goal_locations equals num_agents return vector of goal points
+    ROS_DEBUG_STREAM("Equal number of goal locations!");
+    return goal_points_;
+  } else if (num_goal_locations_< num_agents) {
+    // Reduce kernal size to increase the number of goal locations
+    kernal_size_ -= step_size;
+    ROS_DEBUG_STREAM("Less number of goal locations!");
     GetGoalPoints(binary_image);
-    int step_size = 2;  // kernal step size
 
-    if (num_goal_locations_ == num_agents) {
-        // If num_goal_locations equals num_agents return vector of goal points
-        return goal_points_;
-    } else if (num_goal_locations_< num_agents) {
-        // Reduce kernal size to increase the number of goal locations
-        kernal_size_ -= step_size;
-        GetGoalPoints(binary_image);
-
-        if (num_goal_locations_ > num_agents) {
-            /* Potential infinite loop due to kernal step size,
-             * remove excess goal points
-             */
-            RemoveExcessGoalPoints(num_agents);
-            return goal_points_;
-        } else {
-            RefineGoalPoints(num_agents, binary_image);
-            }
+    if (num_goal_locations_ > num_agents) {
+      /* Potential infinite loop due to kernal step size,
+        * remove excess goal points
+        */
+      ROS_DEBUG_STREAM("Greater number of goal locations!");
+      RemoveExcessGoalPoints(num_agents);
+      return goal_points_;
     } else {
-        // Increase kernal size to reduce the number of goal locations
-        kernal_size_ += step_size;
-        RefineGoalPoints(num_agents, binary_image);
+      ROS_DEBUG_STREAM("Equal or lesser number of goal locations!");
+      RefineGoalPoints(num_agents, binary_image);
         }
+  } else {
+      // Increase kernal size to reduce the number of goal locations
+      kernal_size_ += step_size;
+      ROS_DEBUG_STREAM("Increased the size of the kernal!");
+      RefineGoalPoints(num_agents, binary_image);
+      }
+  return goal_points_;
 }
 
 std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {

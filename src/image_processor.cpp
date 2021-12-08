@@ -113,7 +113,7 @@ cv::Mat ImageProcessor::GetEdges() {
 
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
                                         int num_agents, cv::Mat binary_image) {
-  ROS_INFO_STREAM("Getting goal points from the image!");
+  ROS_DEBUG_STREAM("Getting goal points from the image!");
   GetGoalPoints(binary_image);
   int step_size = 2;  // kernal step size
   if (num_goal_locations_ == num_agents) {
@@ -143,7 +143,7 @@ std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
     ROS_DEBUG_STREAM("Increased the size of the kernal!");
     RefineGoalPoints(num_agents, binary_image);
   }
-  ROS_INFO_STREAM("Got " << goal_points_.size() << " goal points!");
+  ROS_DEBUG_STREAM("Got " << goal_points_.size() << " goal points!");
   return goal_points_;
 }
 

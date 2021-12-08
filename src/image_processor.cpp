@@ -83,10 +83,12 @@ cv::Mat ImageProcessor::GetEdges() {
   cv::Mat gray_image;
 
   cv::resize(this->frame_, this->frame_, cv::Size(500, 500), cv::INTER_LINEAR);
+  ROS_INFO_STREAM("Resize the image: Size 500x500 pixels!");
   this->height_ = 500;
   this->width_ = 500;
 
   cvtColor(this->frame_, gray_image, cv::COLOR_BGR2GRAY);
+  ROS_INFO_STREAM("Converted the image to grayscale!");
 
   cv::Canny(this->frame_, contours, 10, 350);
 
@@ -99,6 +101,7 @@ cv::Mat ImageProcessor::GetEdges() {
   cv::namedWindow("Canny");
   cv::imshow("Canny", contours);
   this->frame_ = contours;
+  ROS_INFO_STREAM("Extracted the edges from the image!");
 
   for ( auto i  = 0; i < this->height_; i++ ) {
     for ( auto j = 0; j < this->width_; j++ ) {
@@ -110,6 +113,7 @@ cv::Mat ImageProcessor::GetEdges() {
 
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
                                         int num_agents, cv::Mat binary_image) {
+  ROS_INFO_STREAM("Getting goal points from the image!");
   GetGoalPoints(binary_image);
   int step_size = 2;  // kernal step size
   if (num_goal_locations_ == num_agents) {
@@ -139,10 +143,12 @@ std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
       ROS_DEBUG_STREAM("Increased the size of the kernal!");
       RefineGoalPoints(num_agents, binary_image);
       }
+  ROS_INFO_STREAM("Got " << goal_points_.size() << " goal points!");
   return goal_points_;
 }
 
 std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
+  ROS_INFO_STREAM("Transforming points from Image frame to Map frame!");
   std::vector<std::vector<double>> transformed_points_;
   for ( auto points : this->goal_points_ ) {
     std::vector<double>new_point;
@@ -150,12 +156,13 @@ std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
     auto y = points[1];
     double new_x = x/20;
     double new_y = -y/20;
-    ROS_INFO_STREAM(x << ": ImageX, " << y << ": ImageY");
-    ROS_INFO_STREAM(new_x << ": MapX, " << new_y << ": MapY");
+    ROS_DEBUG_STREAM(x << ": ImageX, " << y << ": ImageY");
+    ROS_DEBUG_STREAM(new_x << ": MapX, " << new_y << ": MapY");
     new_point.push_back(new_x);
     new_point.push_back(new_y);
     transformed_points_.push_back(new_point);
   }
+  ROS_INFO_STREAM("Transformed points from Image frame to Map frame!");
   return transformed_points_;
 }
 

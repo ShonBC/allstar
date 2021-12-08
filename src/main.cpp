@@ -17,15 +17,12 @@ int main(int argc, char **argv) {
 // int main(int argc, char** argv) {
 //   ros::init(argc, argv, "main");
 //   cv::Mat image = cv::imread("/home/sameer/catkin_ws/src/allstar/src/test.jpg");
-//   // cv::imshow("window", image);
-//   // cv::waitKey(0);
 //   auto img = new ImageProcessor(image);
 //   auto countours = img->GetEdges();
 //   img->RefineGoalPoints(4, countours);
 //   auto points = img->GetGoalPoints();
-//   ROS_INFO_STREAM(points.size() << " Number of goals points");
-//   ROS_INFO_STREAM("Finished processing!");
-//   SwarmServer swarm;
-//   swarm.AssignGoals(points);
-//   ROS_INFO_STREAM("Finished assigning!");
+//   ROS_INFO_STREAM("Got " << points.size() << " goal points!");
+//   // SwarmServer swarm;
+//   // swarm.AssignGoals(points);
+//   ROS_INFO_STREAM("Finished assigning points!");
 // }

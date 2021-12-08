@@ -25,11 +25,20 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
  */
-
+#include <ros/console.h>
 #include "../include/image_processor.h"
 
 ImageProcessor::ImageProcessor(cv::Mat img) {
   this->frame_ = img;
+  this->height_ = img.size().height;
+  this->width_ = img.size().width;
+  this->kernal_size_ = 3;
+  ROS_INFO_STREAM("Image loaded!");
+  ROS_INFO_STREAM(this->height_ << " pixels :Image height");
+  ROS_INFO_STREAM(this->width_ << " pixels :Image width");
+  ROS_INFO_STREAM(this->kernal_size_ << "x" << this->kernal_size_ << " : Kernal size");
+  ROS_DEBUG_STREAM(this->height_ << " pixels :Image height");
+  ROS_DEBUG_STREAM(this->width_ << " pixels :Image width");
 }
 
 void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
@@ -37,12 +46,21 @@ void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
 }
 
 void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {
-    // To-Do
+  std::vector<std::vector<double>> new_points;
+  for ( auto i = 0; i < this->goal_points_.size(); i++ ) {
+    if ( i <= num_agents ) {
+        new_points.push_back(this->goal_points_[i]);
+    }
+  }
 }
 
 cv::Mat ImageProcessor::GetEdges() {
   cv::Mat contours;
   cv::Mat gray_image;
+
+  cv::resize(this->frame_, this->frame_, cv::Size(500, 500), cv::INTER_LINEAR);
+  this->height_ = 500;
+  this->width_ = 500;
 
   cvtColor(this->frame_, gray_image, cv::COLOR_BGR2GRAY);
 
@@ -56,7 +74,15 @@ cv::Mat ImageProcessor::GetEdges() {
 
   cv::namedWindow("Canny");
   cv::imshow("Canny", contours);
+  this->frame_ = contours;
   cv::waitKey(0);
+
+  for ( auto i  = 0; i < this->height_; i++ ) {
+    for ( auto j = 0; j < this->width_; j++ ) {
+      ROS_DEBUG_STREAM((int)contours.at<uchar>(i, j)<< ":Color, " << i << ":i, " << j << ":j");
+    }
+  }
+  return contours;
 }
 
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
@@ -65,7 +91,20 @@ std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
 }
 
 std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
-    // To-Do
+  std::vector<std::vector<double>> transformed_points_;
+  for ( auto points : this->goal_points_ ) {
+    std::vector<double>new_point;
+    auto x = points[0];
+    auto y = points[1];
+    double new_x = x/20;
+    double new_y = -y/20;
+    ROS_INFO_STREAM(x << ": ImageX, " << y << ": ImageY");
+    ROS_INFO_STREAM(new_x << ": MapX, " << new_y << ": MapY");
+    new_point.push_back(new_x);
+    new_point.push_back(new_y);
+    transformed_points_.push_back(new_point);
+  }
+  return transformed_points_;
 }
 
 int ImageProcessor::GetHeight() {

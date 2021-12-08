@@ -6,7 +6,7 @@
     <arg name="world" default="1"/>
     <arg name="robot_" default="4"/>
     <arg name="robot_name" default="$(eval 'robot_' + str(arg('robot_') - 1))"/>
-    <arg name="x_pos" default="$(eval arg('robot_') - 1)"/>
+    <arg name="x_pos" default="$(eval arg('robot_') * 2)"/>
     <arg name="y_pos" default="0.0"/>
     <arg name="z_pos" default="0.0"/>
 

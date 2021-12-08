@@ -32,7 +32,7 @@ ImageProcessor::ImageProcessor(cv::Mat img) {
   this->frame_ = img;
   this->height_ = img.size().height;
   this->width_ = img.size().width;
-  this->kernal_size_ = 3;
+  this->kernal_size_ = 499;
   ROS_INFO_STREAM("Image loaded!");
   ROS_INFO_STREAM(this->height_ << " pixels :Image height");
   ROS_INFO_STREAM(this->width_ << " pixels :Image width");

@@ -33,7 +33,23 @@ ImageProcessor::ImageProcessor(cv::Mat img) {
 }
 
 void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
-    // To-Do
+    // Pass Kernal over image
+    for (int i = 0; i < height_; i = i + kernal_size_) {
+        for (int j = 0; j < width_; j = j + kernal_size_) {
+            cv::Mat kern_window = binary_image(cv::Range(i, i + kernal_size_),
+                                                cv::Range(j, j + kernal_size_));
+
+            if (cv::countNonZero(kern_window) > 0) {
+                /* If edge is within kernal, add location of center of kernal
+                *  to vector of goal locations
+                */
+                double x_center = j + (kernal_size_  / 2);
+                double y_center =  i + (kernal_size_  / 2);
+                std::vector<double> center{x_center, y_center};
+                goal_points_.push_back(center);
+            }
+        }
+    }
 }
 
 void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {

@@ -42,23 +42,30 @@ ImageProcessor::ImageProcessor(cv::Mat img) {
 }
 
 void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
-    // Pass Kernal over image
-    for (int i = 0; i < height_; i = i + kernal_size_) {
-        for (int j = 0; j < width_; j = j + kernal_size_) {
-            cv::Mat kern_window = binary_image(cv::Range(i, i + kernal_size_),
-                                                cv::Range(j, j + kernal_size_));
-
-            if (cv::countNonZero(kern_window) > 0) {
-                /* If edge is within kernal, add location of center of kernal
-                *  to vector of goal locations
-                */
-                double x_center = j + (kernal_size_  / 2);
-                double y_center =  i + (kernal_size_  / 2);
-                std::vector<double> center{x_center, y_center};
-                goal_points_.push_back(center);
-            }
-        }
+  goal_points_.clear();
+  ROS_DEBUG_STREAM("Received an image!");
+  ROS_DEBUG_STREAM(kernal_size_ << ": Current Kernel size");
+  // Pass Kernal over image
+  for (int i = 0; i < height_ - kernal_size_ ; i = i + kernal_size_) {
+    for (int j = 0; j < width_ -kernal_size_; j = j + kernal_size_) {
+      cv::Mat kern_window = binary_image(cv::Range(i, i+ kernal_size_),
+                                          cv::Range(j, j + kernal_size_));
+      // ROS_INFO_STREAM("Created a kernal!");
+      if (cv::countNonZero(kern_window) > 0) {
+        /* If edge is within kernal, add location of center of kernal
+        *  to vector of goal locations
+        */
+        double x_center = j + (kernal_size_  / 2);
+        double y_center =  i + (kernal_size_  / 2);
+        std::vector<double> center{x_center, y_center};
+        goal_points_.push_back(center);
+      }
     }
+  }
+
+  num_goal_locations_ = goal_points_.size();
+  ROS_DEBUG_STREAM(num_goal_locations_ << ": Number of goal points so far");
+  ROS_DEBUG_STREAM("Completed GetGoalPoints!");
 }
 
 void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {

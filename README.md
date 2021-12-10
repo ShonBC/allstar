@@ -25,40 +25,28 @@ All backlog is being tracked [here.](https://docs.google.com/spreadsheets/d/1sR7
 Can be found [here.](https://docs.google.com/document/d/1qceQ_69V6yU-FIa4jNwpUkPDyW1q20VkOy0OK4wDBFg/edit?usp=sharing )
 ***
 
-# Build and Run Instructions for running the protoyupe:
+# Build the package
+Install ROS Melodic [here.](http://wiki.ros.org/melodic/Installation/Ubuntu) 
 
-    git clone https://github.com/ShonBC/allstar
-    git checkout prototype
+A catkin workspace is required for this ROS package to run. 
 
-    #Install tuw package
-    sudo apt install libdxflib-dev
-    export ROS_VERSION=melodic 
-    sudo apt install ros-$ROS_VERSION-map-server
-    sudo apt install ros-$ROS_VERSION-stage-ros
-    cd ~/catkin_ws/src
-    git clone --branch $ROS_VERSION git@github.com:tuw-robotics/tuw_geometry.git 
-    git clone git@github.com:tuw-robotics/tuw_msgs.git 
-    cd tuw_msgs
-    git checkout melodic
-    cd ..
-    git clone --branch $ROS_VERSION git@github.com:tuw-robotics/tuw_multi_robot.git 
-    cd tuw_multi_robot
-    mv -v ~/catkin_ws/src/tuw_multi_robot/* ~/catkin_ws/src/
+Create a workspace called 'allstar_ws' by following the instructions [here.](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)
+    
+    #Clone this package into your_workspace/src/
+    https://github.com/ShonBC/allstar.git
 
-    #Build the package
-    cd ~/catkin_ws/
-    catkin_make
+    chmod +x install_dependencies.sh
+    ./install_dependencies.sh
 
-    #Run the package
-    Open 2 terminals
-    cd ~/catkin_ws/
-    source devel/setup.bash
-    roslaunch allstar swarm.launch
-    roslaunch tuw_multi_robot_demo demo.launch room:=cave cfg:=robot_2
+    chmod +x install_ros_packages.sh
+    ./install_ros_packages.sh  
+    
 
-    #
+# Run the package
+    roslaunch allstar allstar.launch robot:= 5 # robot:= can be any number of robots from 0 -50.
+    rosrun allstar main 5 PATH_TO_IMAGE #PATH_TO_IMAGE should be a abosulte path for the image. 
 
-Generate cppcheck, cpplint and valgrind results and store in a text file in /results directory:
+# Generate cppcheck, cpplint and valgrind results and store in a text file in /results directory:
 
     chmod +x run_cpplint.sh
     ./run_cpplint.sh

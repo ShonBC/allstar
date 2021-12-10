@@ -154,10 +154,10 @@ std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
     std::vector<double>new_point;
     auto x = points[0];
     auto y = points[1];
-    double new_x = x/20;
-    double new_y = -y/20;
-    ROS_DEBUG_STREAM(x << ": ImageX, " << y << ": ImageY");
-    ROS_DEBUG_STREAM(new_x << ": MapX, " << new_y << ": MapY");
+    double new_x = static_cast<double>(x - 250)/20;
+    double new_y = static_cast<double>(500 - y - 250) /20;
+    ROS_INFO_STREAM(x << ": ImageX, " << y << ": ImageY");
+    ROS_INFO_STREAM(new_x << ": MapX, " << new_y << ": MapY");
     new_point.push_back(new_x);
     new_point.push_back(new_y);
     transformed_points_.push_back(new_point);

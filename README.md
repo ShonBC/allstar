@@ -78,13 +78,13 @@ TO-DO
 
 # UML DIAGRAMS:
 <p align = "center">
-<img src="./docs/uml_diagrams/initial/MarchingBandSwarmActivityDiagram.drawio.png" alt="Logo"/>
+<img src="./docs/uml_diagrams/revised/AllstarActivityDiagram.drawio.png" alt="Logo"/>
 
 <p align = "center"><em>Figure 1. Activity Diagram</em></p>
 </p>
 
 <p align = "center">
-<img src="./docs/uml_diagrams/initial/MarchingBandSwarmClassDiagram.png" alt="Logo"/>
+<img src="./docs/uml_diagrams/revised/AllstarClassDiagram.drawio.png" alt="Logo"/>
 
 <p align = "center"><em>Figure 2. Class Diagram</em></p>
 </p>

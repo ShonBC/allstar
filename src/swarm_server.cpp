@@ -65,26 +65,27 @@ void SwarmServer::AssignInitPos() {
 
 void SwarmServer::AssignGoals(std::vector<std::vector<double>> goal_points) {
   ros::NodeHandle n;
-  ros::Publisher chatter_pub = n.advertise<tuw_multi_robot_msgs::RobotGoalsArray>("goals", 1000);
-  ros::Rate loop_rate(10);
-  tuw_multi_robot_msgs::RobotGoalsArray robot_goals_array;
-  robot_goals_array.header.frame_id = "map";
-  geometry_msgs::Pose pose;
-  std::string name;
-  int counter = 0;
-  for (int i = 0; i < goal_points.size(); i++) {
-    tuw_multi_robot_msgs::RobotGoals robot;
-    name = "robot_" + std::to_string(i);
-    robot.robot_name = name;
-    pose.position.x = goal_points[i][0];
-    pose.position.y = goal_points[i][1];
-    robot.destinations.push_back(pose);
-    robot_goals_array.robots.push_back(robot);
-  }
-  while (counter < 2) {
-    chatter_pub.publish(robot_goals_array);
-    ros::spinOnce();
-    loop_rate.sleep();
-    counter++;
-  }
+  ros::Publisher chatter_pub = n.advertise<tuw_multi_robot_msgs::RobotGoalsArray>("goals", 1000, true);
+  // ros::Rate loop_rate(10);
+  // int counter = 0;
+  // while (counter < 2) {
+    for (int i = 0; i < goal_points.size(); i++) {
+      tuw_multi_robot_msgs::RobotGoalsArray robot_goals_array;
+      robot_goals_array.header.frame_id = "map";
+      robot_goals_array.header.stamp = ros::Time::now();
+      geometry_msgs::Pose pose;
+      std::string name;
+      tuw_multi_robot_msgs::RobotGoals robot;
+      name = "robot_" + std::to_string(i);
+      robot.robot_name = name;
+      pose.position.x = goal_points[i][0];
+      pose.position.y = goal_points[i][1];
+      robot.destinations.push_back(pose);
+      robot_goals_array.robots.push_back(robot);
+      chatter_pub.publish(robot_goals_array);
+      ros::spinOnce();
+      ros::Duration(1.000001).sleep();
+    }
+    // counter++;
+  // }
 }

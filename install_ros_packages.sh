@@ -18,3 +18,12 @@ echo "export TURTLEBOT3_MODEL=waffle_pi" >> ~/.bashrc
 
 source ~/.bashrc
 
+#Install all other ROS Packages
+cd ~/allstar_ws/src
+git clone --branch allstar git@github.com:SamPusegaonkar/tuw_geometry.git 
+git clone --branch allstar git@github.com:SamPusegaonkar/tuw_msgs.git 
+git clone --branch allstar git@github.com:SamPusegaonkar/tuw_multi_robot.git 
+source ~/.bashrc
+#Build the entire workspace!
+cd ~/allstar_ws/
+catkin_make

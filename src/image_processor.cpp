@@ -91,7 +91,23 @@ cv::Mat ImageProcessor::GetEdges() {
   cvtColor(this->frame_, gray_image, cv::COLOR_BGR2GRAY);
   ROS_INFO_STREAM("Converted the image to grayscale!");
 
-  cv::Canny(this->frame_, contours, 10, 350);
+  cv::Canny(this->frame_, contours, 255/3, 255);
+
+  // int morph_size = 1;
+
+  // // Create structuring element
+  // cv::Mat element = cv::getStructuringElement(
+  //     cv::MORPH_RECT,
+  //     cv::Size(2 * morph_size + 1,
+  //           2 * morph_size + 1),
+  //     cv::Point(morph_size, morph_size));
+  // cv::Mat output;
+
+  // // Closing
+  // cv::morphologyEx(contours, output,
+  //               cv::MORPH_CLOSE, element,
+  //               cv::Point(-1, -1), 2);
+  // imshow("Closing", output);
 
   cv::namedWindow("Image");
   cv::imshow("Image", this->frame_);
@@ -101,6 +117,7 @@ cv::Mat ImageProcessor::GetEdges() {
 
   cv::namedWindow("Canny");
   cv::imshow("Canny", contours);
+  cv::waitKey(0);
   this->frame_ = contours;
   ROS_INFO_STREAM("Extracted the edges from the image!");
 
@@ -116,54 +133,54 @@ std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
                                         int num_agents, cv::Mat binary_image) {
   ROS_DEBUG_STREAM("Getting goal points from the image!");
 
-  // // TESTING
-  // kernal_size_ = 1;
-  // GetGoalPoints(binary_image);
-  // sort(goal_points_.begin(), goal_points_.end());
-  // ROS_INFO_STREAM("Got " << goal_points_.size() << " goal points!");
-  // std::vector<std::vector<double>> new_goals;
-  // int divisor = goal_points_.size() / num_agents;
-  // if (num_agents < goal_points_.size()) {
-  //   for (int i = 0; i < goal_points_.size(); i++) {
-  //     if (i % divisor == 0) {
-  //       // goal_points_.erase(goal_points_.begin() + i);
-  //       new_goals.push_back(goal_points_[i]);
-  //     }
-  //   }
-  // }
-  // goal_points_ = new_goals;
-  // RemoveExcessGoalPoints(num_agents);
-  // // END OF TESTING
-
-
-  int step_size = 2;  // kernal step size
-  if (num_goal_locations_ == num_agents) {
-    // If num_goal_locations equals num_agents return vector of goal points
-    ROS_DEBUG_STREAM("Equal number of goal locations!");
-    return goal_points_;
-  } else if (num_goal_locations_< num_agents) {
-    // Reduce kernal size to increase the number of goal locations
-    kernal_size_ -= step_size;
-    ROS_DEBUG_STREAM("Less number of goal locations!");
-    GetGoalPoints(binary_image);
-
-    if (num_goal_locations_ > num_agents) {
-      /* Potential infinite loop due to kernal step size,
-        * remove excess goal points
-        */
-      ROS_DEBUG_STREAM("Greater number of goal locations!");
-      RemoveExcessGoalPoints(num_agents);
-      return goal_points_;
-    } else {
-      ROS_DEBUG_STREAM("Equal or lesser number of goal locations!");
-      RefineGoalPoints(num_agents, binary_image);
+  // TESTING
+  kernal_size_ = 1;
+  GetGoalPoints(binary_image);
+  sort(goal_points_.begin(), goal_points_.end());
+  ROS_INFO_STREAM("Got " << goal_points_.size() << " goal points!");
+  std::vector<std::vector<double>> new_goals;
+  int divisor = goal_points_.size() / num_agents;
+  if (num_agents < goal_points_.size()) {
+    for (int i = 0; i < goal_points_.size(); i++) {
+      if (i % divisor == 0) {
+        // goal_points_.erase(goal_points_.begin() + i);
+        new_goals.push_back(goal_points_[i]);
+      }
     }
-  } else {
-    // Increase kernal size to reduce the number of goal locations
-    kernal_size_ += step_size;
-    ROS_DEBUG_STREAM("Increased the size of the kernal!");
-    RefineGoalPoints(num_agents, binary_image);
   }
+  goal_points_ = new_goals;
+  RemoveExcessGoalPoints(num_agents);
+  // END OF TESTING
+
+
+  // int step_size = 2;  // kernal step size
+  // if (num_goal_locations_ == num_agents) {
+  //   // If num_goal_locations equals num_agents return vector of goal points
+  //   ROS_DEBUG_STREAM("Equal number of goal locations!");
+  //   return goal_points_;
+  // } else if (num_goal_locations_< num_agents) {
+  //   // Reduce kernal size to increase the number of goal locations
+  //   kernal_size_ -= step_size;
+  //   ROS_DEBUG_STREAM("Less number of goal locations!");
+  //   GetGoalPoints(binary_image);
+
+  //   if (num_goal_locations_ > num_agents) {
+  //     /* Potential infinite loop due to kernal step size,
+  //       * remove excess goal points
+  //       */
+  //     ROS_DEBUG_STREAM("Greater number of goal locations!");
+  //     RemoveExcessGoalPoints(num_agents);
+  //     return goal_points_;
+  //   } else {
+  //     ROS_DEBUG_STREAM("Equal or lesser number of goal locations!");
+  //     RefineGoalPoints(num_agents, binary_image);
+  //   }
+  // } else {
+  //   // Increase kernal size to reduce the number of goal locations
+  //   kernal_size_ += step_size;
+  //   ROS_DEBUG_STREAM("Increased the size of the kernal!");
+  //   RefineGoalPoints(num_agents, binary_image);
+  // }
   ROS_INFO_STREAM("Got " << goal_points_.size() << " goal points!");
   return goal_points_;
 }

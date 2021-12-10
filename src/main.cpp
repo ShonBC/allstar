@@ -31,6 +31,7 @@ int main(int argc, char** argv) {
   ROS_INFO_STREAM("Got " << points.size() << " goal points!");
   SwarmServer swarm;
   swarm.num_agents = std::atoi(argv[1]);
+  ROS_INFO_STREAM("Kernel size: " << img->GetKernalSize());
   swarm.AssignGoals(points);
   ROS_INFO_STREAM("Finished assigning points!");
 }

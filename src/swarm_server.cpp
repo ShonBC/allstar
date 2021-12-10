@@ -69,6 +69,12 @@ void SwarmServer::AssignGoals(std::vector<std::vector<double>> goal_points) {
   // ros::Rate loop_rate(10);
   // int counter = 0;
   // while (counter < 2) {
+    sort(goal_points.begin(), goal_points.end());
+    for ( auto points : goal_points ) {
+    auto x = points[0];
+    auto y = points[1];
+    ROS_DEBUG_STREAM(x << ": MapX, " << y << ": MapY");
+  }
     for (int i = 0; i < goal_points.size(); i++) {
       tuw_multi_robot_msgs::RobotGoalsArray robot_goals_array;
       robot_goals_array.header.frame_id = "map";
@@ -88,4 +94,5 @@ void SwarmServer::AssignGoals(std::vector<std::vector<double>> goal_points) {
     }
     // counter++;
   // }
+  ROS_INFO_STREAM("Finished assigning goal points!");
 }

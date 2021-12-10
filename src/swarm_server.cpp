@@ -28,41 +28,6 @@
 
 #include "../include/swarm_server.h"
 
-
-
-void SwarmServer::InitiateMap() {
-  // To-Do
-  ros::NodeHandle n;
-  ros::Publisher chatter_pub = n.advertise<nav_msgs::OccupancyGrid>("map", 1000);
-  // ros::Subscriber chatter_sub = n.subscribe("map", 1000, callback);
-  ros::Rate loop_rate(10);
-  // ros::spin();
-  std::vector<int8_t> vec(250000, 0);
-  while (ros::ok()) {
-    nav_msgs::OccupancyGrid msg;
-    msg.info.height = 500;
-    msg.info.width = 500;
-    msg.info.origin.orientation.w = 1;
-    msg.info.origin.orientation.x = 0;
-    msg.info.origin.orientation.y = 0;
-    msg.info.origin.orientation.z = 0;
-    msg.info.origin.position.x = 0;
-    msg.info.origin.position.y = 0;
-    msg.info.origin.position.z = 0;
-    msg.data = vec;
-    chatter_pub.publish(msg);
-
-    ros::spinOnce();
-    // std::cout << "working" << std::endl;
-
-    loop_rate.sleep();
-  }
-}
-
-void SwarmServer::AssignInitPos() {
-  // To-do
-}
-
 void SwarmServer::AssignGoals(std::vector<std::vector<double>> goal_points) {
   ros::NodeHandle n;
   ros::Publisher chatter_pub = n.advertise<tuw_multi_robot_msgs::RobotGoalsArray>("goals", 1000, true);

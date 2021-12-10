@@ -48,19 +48,6 @@ class SwarmServer {
     SwarmServer() : num_agents{0} {};
 
     /**
-     * @brief Initiate the map defined from an image
-     * 
-     */
-    void InitiateMap();
-
-    /**
-     * @brief Assign initial positions to each robot in the swarm
-     * 
-     */
-
-    void AssignInitPos();
-
-    /**
      * @brief Assign goal positions to each robot in the swarm
 
         * 

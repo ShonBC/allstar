@@ -23,3 +23,26 @@ cd ../../
 #Install Eigen
 sudo apt-get install libeigen3-dev
 
+#Create a workspace
+source /opt/ros/melodic/setup.bash
+mkdir -p ~/allstar_ws/src
+cd ~/allstar_ws/
+catkin_make
+source devel/setup.bash
+
+#Install ROS Dependencies
+sudo apt install libdxflib-dev
+sudo apt install ros-melodic-map-server
+sudo apt install ros-melodic-stage-ros
+
+#Install all dependencies
+cd ~/allstar_ws/src
+git clone --branch allstar git@github.com:SamPusegaonkar/tuw_geometry.git 
+git clone --branch allstar git@github.com:SamPusegaonkar/tuw_msgs.git 
+git clone --branch allstar git@github.com:SamPusegaonkar/tuw_multi_robot.git 
+git clone https://github.com/ShonBC/allstar
+
+#Build the entire workspace!
+cd ~/allstar_ws/
+catkin_make
+

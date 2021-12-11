@@ -1,4 +1,5 @@
 #Install OpenCV
+cd
 git clone https://github.com/opencv/opencv.git
 cd opencv
 git checkout 4.0.0

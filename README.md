@@ -1,6 +1,8 @@
 # allstar
 
 [![License: BSD-3](https://img.shields.io/badge/License-BSD_3--Clause-green.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg)
+[![GitHub release](https://img.shields.io/github/v/release/shonbc/allstar)](https://github.com/shonbc/allstar/releases/)
 
 
 ---

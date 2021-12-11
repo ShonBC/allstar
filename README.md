@@ -67,6 +67,7 @@ The original ImageProcessor class was designed to refine the list of goal points
 
 
 ## Generate cppcheck, cpplint and valgrind results and store in a text file in /results directory:
+***
 
     chmod +x run_cpplint.sh
     ./run_cpplint.sh
@@ -78,6 +79,7 @@ The original ImageProcessor class was designed to refine the list of goal points
     ./run_valgrind.sh
 
 ## Generate Doxygen files:
+***
 
     doxygen Doxyfile
 

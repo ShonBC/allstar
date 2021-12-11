@@ -31,9 +31,8 @@
 void SwarmServer::AssignGoals(std::vector<std::vector<double>> goal_points) {
   ros::NodeHandle n;
   ros::Publisher chatter_pub = n.advertise<tuw_multi_robot_msgs::RobotGoalsArray>("goals", 1000, true);
-  // ros::Rate loop_rate(10);
-  // int counter = 0;
-  // while (counter < 2) {
+
+    ROS_INFO_STREAM("Assigning goals to robots!");
     sort(goal_points.begin(), goal_points.end());
     for ( auto points : goal_points ) {
     auto x = points[0];
@@ -57,7 +56,5 @@ void SwarmServer::AssignGoals(std::vector<std::vector<double>> goal_points) {
       ros::spinOnce();
       ros::Duration(1.000001).sleep();
     }
-    // counter++;
-  // }
   ROS_INFO_STREAM("Finished assigning goal points!");
 }

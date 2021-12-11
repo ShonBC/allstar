@@ -93,22 +93,6 @@ cv::Mat ImageProcessor::GetEdges() {
 
   cv::Canny(this->frame_, contours, 255/3, 255);
 
-  // int morph_size = 1;
-
-  // // Create structuring element
-  // cv::Mat element = cv::getStructuringElement(
-  //     cv::MORPH_RECT,
-  //     cv::Size(2 * morph_size + 1,
-  //           2 * morph_size + 1),
-  //     cv::Point(morph_size, morph_size));
-  // cv::Mat output;
-
-  // // Closing
-  // cv::morphologyEx(contours, output,
-  //               cv::MORPH_CLOSE, element,
-  //               cv::Point(-1, -1), 2);
-  // imshow("Closing", output);
-
   cv::namedWindow("Image");
   cv::imshow("Image", this->frame_);
 
@@ -117,7 +101,7 @@ cv::Mat ImageProcessor::GetEdges() {
 
   cv::namedWindow("Canny");
   cv::imshow("Canny", contours);
-  cv::waitKey(0);
+  // cv::waitKey(0);
   this->frame_ = contours;
   ROS_INFO_STREAM("Extracted the edges from the image!");
 
@@ -129,6 +113,17 @@ cv::Mat ImageProcessor::GetEdges() {
   return contours;
 }
 
+double getClockwiseAngle(std::vector<double> p) {
+    double angle = 0.0;
+
+    angle = -1 * atan2(p[0], -1 * p[1]);
+    return angle;
+}
+
+bool comparePoints(std::vector<double> point1, std::vector<double> point2) {
+    return getClockwiseAngle(point1) < getClockwiseAngle(point2);
+}
+
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
                                         int num_agents, cv::Mat binary_image) {
   ROS_DEBUG_STREAM("Getting goal points from the image!");
@@ -136,7 +131,9 @@ std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
   // TESTING
   kernal_size_ = 1;
   GetGoalPoints(binary_image);
-  sort(goal_points_.begin(), goal_points_.end());
+  // sort(goal_points_.begin(), goal_points_.end());
+  // std::random_shuffle(goal_points_.begin(), goal_points_.end());
+  sort(goal_points_.begin(), goal_points_.end(), comparePoints);
   ROS_INFO_STREAM("Got " << goal_points_.size() << " goal points!");
   std::vector<std::vector<double>> new_goals;
   int divisor = goal_points_.size() / num_agents;
@@ -194,8 +191,8 @@ std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
     auto y = points[1];
     double new_x = static_cast<double>(x - 250)/20;
     double new_y = static_cast<double>(500 - y - 250) /20;
-    ROS_INFO_STREAM(x << ": ImageX, " << y << ": ImageY");
-    ROS_INFO_STREAM(new_x << ": MapX, " << new_y << ": MapY");
+    ROS_DEBUG_STREAM(x << ": ImageX, " << y << ": ImageY");
+    ROS_DEBUG_STREAM(new_x << ": MapX, " << new_y << ": MapY");
     new_point.push_back(new_x);
     new_point.push_back(new_y);
     transformed_points_.push_back(new_point);

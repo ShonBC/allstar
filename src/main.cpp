@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     ("Enter the # of Robots (robots_) and absolute Image File Path.");
     return 1;
     }
-  ROS_INFO_STREAM(argc << "argc");
+
   ros::init(argc, argv, "main");
   cv::Mat image = cv::imread(argv[2]);
   auto img = new ImageProcessor(image);
@@ -46,5 +46,4 @@ int main(int argc, char** argv) {
   swarm.num_agents = std::atoi(argv[1]);
   ROS_INFO_STREAM("Kernel size: " << img->GetKernalSize());
   swarm.AssignGoals(points);
-  ROS_INFO_STREAM("Finished assigning points!");
 }

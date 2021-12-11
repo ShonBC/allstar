@@ -81,13 +81,13 @@ TEST(test_imageProcessor_4, check_refine_goal_points)
     {82,82}, {247,82}, {412,82}, {82,247}, {247,247}};
   img->RefineGoalPoints(5, countours);
   std::vector<std::vector<double>> obtained_refined_goal_points = img->GetGoalPoints();
-  EXPECT_EQ(obtained_refined_goal_points, expected_refined_goal_points);
+  ASSERT_EQ(obtained_refined_goal_points, expected_refined_goal_points);
 }
 
 TEST(test_imageProcessor_5, check_get_goal_location_count)
 {
   int obtained_goal_location_count= img->GetGoalLocationCount();
-  EXPECT_EQ(obtained_goal_location_count, 5);
+  ASSERT_EQ(obtained_goal_location_count, 5);
 }
 
 TEST(test_imageProcessor_6, check_transform_to_map_coordinates)
@@ -97,6 +97,6 @@ TEST(test_imageProcessor_6, check_transform_to_map_coordinates)
 
   auto obtained_transformed_goal_points = img->TransformToMapCoordinates();
 
-  EXPECT_EQ(obtained_transformed_goal_points, expected_transformed_goal_points);
+  ASSERT_EQ(obtained_transformed_goal_points, expected_transformed_goal_points);
 
 }

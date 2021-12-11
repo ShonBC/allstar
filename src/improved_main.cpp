@@ -18,11 +18,13 @@ int main(int argc, char** argv) {
   cv::cvtColor(image, bw_img, cv::COLOR_BGR2GRAY);
   cv::threshold(bw_img, bin, 100, 255, cv::THRESH_BINARY_INV);
   cv::imshow("bin", bin);
-  cv::waitKey(0);
   img->ImprovedRefineGoalPoints(std::atoi(argv[1]), bin);
-
   auto points = img->TransformToMapCoordinates();
-  ROS_INFO_STREAM("Got " << points.size() << " goal points!");
+
+  for ( auto i  = 0; i < points.size(); i++ ) {
+    ROS_DEBUG_STREAM("goal points: " << points[i][0] << " " << points[i][1]);
+  }
+
   SwarmServer swarm;
   swarm.num_agents = std::atoi(argv[1]);
   ROS_INFO_STREAM("Kernel size: " << img->GetKernalSize());

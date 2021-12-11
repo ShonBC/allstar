@@ -164,7 +164,6 @@ std::vector<std::vector<double>> ImageProcessor::ImprovedRefineGoalPoints(
   GetGoalPoints(binary_image);
   sort(goal_points_.begin(), goal_points_.end());
   // std::random_shuffle(goal_points_.begin(), goal_points_.end());
-  ROS_INFO_STREAM("Got " << goal_points_.size() << " goal points!");
   std::vector<std::vector<double>> new_goals;
   int divisor = goal_points_.size() / num_agents;
   if (num_agents < goal_points_.size()) {
@@ -178,6 +177,7 @@ std::vector<std::vector<double>> ImageProcessor::ImprovedRefineGoalPoints(
   goal_points_ = new_goals;
   RemoveExcessGoalPoints(num_agents);
   ROS_INFO_STREAM("Got " << goal_points_.size() << " goal points!");
+  return goal_points_;
 }
 
 std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {

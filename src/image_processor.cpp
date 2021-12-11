@@ -46,8 +46,8 @@ void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
   ROS_DEBUG_STREAM("Received an image!");
   ROS_DEBUG_STREAM(kernal_size_ << ": Current Kernel size");
   // Pass Kernal over image
-  for (int i = 0; i < height_ - kernal_size_ ; i = i + kernal_size_) {
-    for (int j = 0; j < width_ -kernal_size_; j = j + kernal_size_) {
+  for (int i = 0; i <= height_ - kernal_size_ ; i = i + kernal_size_) {
+    for (int j = 0; j <= width_ -kernal_size_; j = j + kernal_size_) {
       cv::Mat kern_window = binary_image(cv::Range(i, i+ kernal_size_),
                                           cv::Range(j, j + kernal_size_));
       // ROS_INFO_STREAM("Created a kernal!");
@@ -93,6 +93,12 @@ cv::Mat ImageProcessor::GetEdges() {
 
   cv::Canny(this->frame_, contours, 255/3, 255);
 
+  cv::Mat bw_img;
+  cv::Mat bin;
+  cv::cvtColor(frame_, bw_img, cv::COLOR_BGR2GRAY);
+  cv::threshold(bw_img, bin, 100, 255, cv::THRESH_BINARY_INV);
+  cv::imshow("bin", bin);
+
   cv::namedWindow("Image");
   cv::imshow("Image", this->frame_);
 
@@ -102,7 +108,6 @@ cv::Mat ImageProcessor::GetEdges() {
   cv::namedWindow("Canny");
   cv::imshow("Canny", contours);
   // cv::waitKey(0);
-  this->frame_ = contours;
   ROS_INFO_STREAM("Extracted the edges from the image!");
 
   for ( auto i  = 0; i < this->height_; i++ ) {
@@ -110,30 +115,55 @@ cv::Mat ImageProcessor::GetEdges() {
       ROS_DEBUG_STREAM((int)contours.at<uchar>(i, j)<< ":Color, " << i << ":i, " << j << ":j");
     }
   }
-  return contours;
-}
-
-double getClockwiseAngle(std::vector<double> p) {
-    double angle = 0.0;
-
-    angle = -1 * atan2(p[0], -1 * p[1]);
-    return angle;
-}
-
-bool comparePoints(std::vector<double> point1, std::vector<double> point2) {
-    return getClockwiseAngle(point1) < getClockwiseAngle(point2);
+  return bin;
 }
 
 std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
                                         int num_agents, cv::Mat binary_image) {
   ROS_DEBUG_STREAM("Getting goal points from the image!");
 
-  // TESTING
+  GetGoalPoints(binary_image);
+
+  int step_size = 2;  // kernal step size
+  if (num_goal_locations_ == num_agents) {
+    // If num_goal_locations equals num_agents return vector of goal points
+    ROS_DEBUG_STREAM("Equal number of goal locations!");
+    return goal_points_;
+  } else if (num_goal_locations_< num_agents) {
+    // Reduce kernal size to increase the number of goal locations
+    kernal_size_ -= step_size;
+    ROS_DEBUG_STREAM("Less number of goal locations!");
+    GetGoalPoints(binary_image);
+
+    if (num_goal_locations_ > num_agents) {
+      /* Potential infinite loop due to kernal step size,
+        * remove excess goal points
+        */
+      ROS_DEBUG_STREAM("Greater number of goal locations!");
+      RemoveExcessGoalPoints(num_agents);
+      return goal_points_;
+    } else {
+      ROS_DEBUG_STREAM("Equal or lesser number of goal locations!");
+      RefineGoalPoints(num_agents, binary_image);
+    }
+  } else {
+    // Increase kernal size to reduce the number of goal locations
+    kernal_size_ += step_size;
+    ROS_DEBUG_STREAM("Increased the size of the kernal!");
+    RefineGoalPoints(num_agents, binary_image);
+  }
+
+  ROS_DEBUG_STREAM("Got " << goal_points_.size() << " goal points!");
+  return goal_points_;
+}
+
+std::vector<std::vector<double>> ImageProcessor::ImprovedRefineGoalPoints(
+                                        int num_agents, cv::Mat binary_image) {
+  ROS_INFO_STREAM("Getting goal points from the image!");
   kernal_size_ = 1;
   GetGoalPoints(binary_image);
-  // sort(goal_points_.begin(), goal_points_.end());
+  sort(goal_points_.begin(), goal_points_.end());
   // std::random_shuffle(goal_points_.begin(), goal_points_.end());
-  sort(goal_points_.begin(), goal_points_.end(), comparePoints);
   ROS_INFO_STREAM("Got " << goal_points_.size() << " goal points!");
   std::vector<std::vector<double>> new_goals;
   int divisor = goal_points_.size() / num_agents;
@@ -147,43 +177,11 @@ std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
   }
   goal_points_ = new_goals;
   RemoveExcessGoalPoints(num_agents);
-  // END OF TESTING
-
-
-  // int step_size = 2;  // kernal step size
-  // if (num_goal_locations_ == num_agents) {
-  //   // If num_goal_locations equals num_agents return vector of goal points
-  //   ROS_DEBUG_STREAM("Equal number of goal locations!");
-  //   return goal_points_;
-  // } else if (num_goal_locations_< num_agents) {
-  //   // Reduce kernal size to increase the number of goal locations
-  //   kernal_size_ -= step_size;
-  //   ROS_DEBUG_STREAM("Less number of goal locations!");
-  //   GetGoalPoints(binary_image);
-
-  //   if (num_goal_locations_ > num_agents) {
-  //     /* Potential infinite loop due to kernal step size,
-  //       * remove excess goal points
-  //       */
-  //     ROS_DEBUG_STREAM("Greater number of goal locations!");
-  //     RemoveExcessGoalPoints(num_agents);
-  //     return goal_points_;
-  //   } else {
-  //     ROS_DEBUG_STREAM("Equal or lesser number of goal locations!");
-  //     RefineGoalPoints(num_agents, binary_image);
-  //   }
-  // } else {
-  //   // Increase kernal size to reduce the number of goal locations
-  //   kernal_size_ += step_size;
-  //   ROS_DEBUG_STREAM("Increased the size of the kernal!");
-  //   RefineGoalPoints(num_agents, binary_image);
-  // }
   ROS_INFO_STREAM("Got " << goal_points_.size() << " goal points!");
-  return goal_points_;
 }
 
 std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
-  ROS_INFO_STREAM("Transforming points from Image frame to Map frame!");
+  ROS_INFO_STREAM("Transforming points...");
   std::vector<std::vector<double>> transformed_points_;
   for ( auto points : this->goal_points_ ) {
     std::vector<double>new_point;

@@ -84,4 +84,8 @@ TEST(test_imageProcessor_4, check_refine_goal_points)
   EXPECT_EQ(obtained_refined_goal_points, expected_refined_goal_points);
 }
 
-
+TEST(test_imageProcessor_5, check_get_goal_location_count)
+{
+  int obtained_goal_location_count= img->GetGoalLocationCount();
+  EXPECT_EQ(obtained_goal_location_count, 5);
+}

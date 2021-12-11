@@ -1,9 +1,7 @@
 /**
  * @file main.cpp
  * @author Shon Cortes (scortes3@umd.edu), Sameer Pusegaonkar (sameer@umd.edu), Pooja Kabra (pkabra@terpmail.umd.edu)
- * @brief Main node that processes an input image and assign goal points to all robots in swarm based off of user input.
- * This implementation uses the RefineGoalPoints method of the ImageProcessor Class.
- * 
+ * @brief Main node that processes an input image and assign goal points to all robots in swarm based off of user input. This implementation uses the RefineGoalPoints method of the ImageProcessor Class.
  * @version 0.1
  * @date 2021-12-11
  * 

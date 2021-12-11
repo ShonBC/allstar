@@ -5,6 +5,11 @@
     <arg name="file_path" default=""/>
     <arg name="world" default="1"/>
 
+    <!-- Option to record bag file of robot_0/cmd_vel topics -->
+    <arg name="ros_bag" default="false"/>
+    <node pkg="rosbag" type="record" name="rosbag_node"
+        args="record robot_0/cmd_vel -O $(find allstar)/docs/bag/allstar.bag" if="$(arg ros_bag)"/>
+
     <!-- Open empty world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch" if="$(eval arg('world') > 0)">
         <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/empty.world"/>

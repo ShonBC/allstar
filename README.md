@@ -29,26 +29,27 @@ Can be found [here.](https://docs.google.com/document/d/1qceQ_69V6yU-FIa4jNwpUkP
 
 # Build Instructions:
 
-    #Clone Allstar package in the src folder of a catkin workspace
-    git clone --branch allstar https://github.com/ShonBC/allstar
+Install ROS Melodic [here.](http://wiki.ros.org/melodic/Installation/Ubuntu) 
 
-    #Install tuw package
-    sudo apt install libdxflib-dev
-    sudo apt install ros-melodic-map-server
-    sudo apt install ros-melodic-stage-ros
+**Required: Create a catkin workspace called 'allstar_ws' in the home directory by following the instructions [here.](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)**
     
-    #Clone tuw packages in the src folder of a catkin workspace
-    git clone --branch allstar git@github.com:SamPusegaonkar/tuw_geometry.git 
-    git clone --branch allstar git@github.com:SamPusegaonkar/tuw_msgs.git 
-    git clone --branch allstar git@github.com:SamPusegaonkar/tuw_multi_robot.git 
+    #Clone this package into allstar_ws/src/
+    cd ~/allstar_ws/src/
+    git clone https://github.com/ShonBC/allstar.git
 
-    #Build all packages by running the following in your catkin workspace directory:
-    catkin_make
-    source devel/setup.bash
+    cd ~/allstar_ws/src/allstar/ 
+    chmod +x install_dependencies.sh
+    ./install_dependencies.sh
+
+    chmod +x install_ros_packages.sh
+    ./install_ros_packages.sh  
+
 
 # Run Instructions
 
     #In one terminal run:
+    cd ~/allstar_ws/
+    source devel/setup.bash
     roslaunch allstar allstar.launch robot_:=NUMBER_OF_ROBOTS
 
     #By default the allstar.launch file will not record a bag file. To run the nodes and record a bag file run:
@@ -61,15 +62,19 @@ Can be found [here.](https://docs.google.com/document/d/1qceQ_69V6yU-FIa4jNwpUkP
 
 The original ImageProcessor class was designed to refine the list of goal points by sweeping a kernel over the input image and progressively shrinking it until the number of goal points generated equals the number of robots in the swarm. Having larger robot swarms helps increase the resolution of the final swarm formation. For the swarms of 50 robots we tested, the simulation ran slow and the kernel size caused deviations from the desired goal locations. An improved algorithm was developed to improve resolution of the swarm formation at lower robot numbers. The original algorithm is implemented in the "main" executable and the improved algorithm is implemented in the "improved_main" executable.
 
+    
     #To execute the original algorithm, in a second terminal run:
+    cd ~/allstar_ws/
+    source devel/setup.bash
     rosrun allstar main NUMBER_OF_ROBOTS FILE_PATH_TO_INPUT_IMAGE
 
     #Alternatively to execute the improved algorithm, in a second terminal run: 
+    cd ~/allstar_ws/
+    source devel/setup.bash
     rosrun allstar improved_main NUMBER_OF_ROBOTS FILE_PATH_TO_INPUT_IMAGE    
 
 
-## Generate cppcheck, cpplint and valgrind results and store in a text file in /results directory:
-***
+# Generate cppcheck, cpplint and valgrind results and store in a text file in /results directory:
 
     chmod +x run_cpplint.sh
     ./run_cpplint.sh

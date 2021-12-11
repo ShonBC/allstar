@@ -34,62 +34,63 @@
 cv::Mat image = cv::imread("/home/poo/Downloads/test.jpg");
 auto img = new ImageProcessor(image);
 cv::Mat countours = img->GetEdges();
+int num_agents = 5;
 
+/**
+ * @brief Test for GetHeight()
+ **/
 TEST(test_imageProcessor_1, check_get_height)
 {
   int obtained_height= img->GetHeight();
   ASSERT_EQ(obtained_height, 500);
 }
 
+/**
+ * @brief Test for GetWidth()
+ **/
 TEST(test_imageProcessor_2, check_get_width)
 {
   int obtained_width= img->GetWidth();
   ASSERT_EQ(obtained_width, 500);
 }
 
+/**
+ * @brief Test for GetKernalSize()
+ **/
 TEST(test_imageProcessor_3, check_get_kernal_size)
 {
-  // int expected_kernal_size = 20;
-  // img->SetKernalSize(expected_kernal_size);
   int obtained_kernal_size= img->GetKernalSize(); 
   ASSERT_EQ(obtained_kernal_size, 499);
 }
 
-// TEST(test_imageProcessor_4, check_get_goal_points_)
-// {
-//     // img->SetKernalSize(50);
-//     // std::vector<std::vector<double>> expected_goal_points{
-//     // {75,25}, {125,25}, {175,25}, {225,25}, {275,25},
-//     // {325,25}, {375,25}, {425,25}, {25,75}, {75,75},
-//     // {225,75}, {275,75}, {425,75}, {475,75}, {25,125}, {225,125},
-//     // {275,125}, {475,125}, {25,175}, {475,175}, {25,225}, {475,225},
-//     // {25,275}, {75,275}, {425,275}, {475,275}, {75,325}, {125,325},
-//     // {375,325}, {425,325}, {125,375}, {175,375}, {325,375}, {375,375}, 
-//     // {175,425}, {225,425}, {275,425}, {325,425}, {225,475}, {275,475}};
-//     std::vector<std::vector<double>> expected_goal_points{{249,249}};
-//     img->GetGoalPoints(countours);
-//     std::vector<std::vector<double>> obtained_goal_points = img->GetGoalPoints();
-    
-//     auto result = std::equal(expected_goal_points.begin(), expected_goal_points.end(), obtained_goal_points.begin());
-
-//     EXPECT_EQ(result, true);
-// }
-
+/**
+ * @brief Test for RefineGoalPoints()
+ **/
 TEST(test_imageProcessor_4, check_refine_goal_points)
 {
   std::vector<std::vector<double>> expected_refined_goal_points{
     {82,82}, {247,82}, {412,82}, {82,247}, {247,247}};
-  img->RefineGoalPoints(5, countours);
+
+  img->RefineGoalPoints(num_agents, countours);
   std::vector<std::vector<double>> obtained_refined_goal_points = img->GetGoalPoints();
+  
   ASSERT_EQ(obtained_refined_goal_points, expected_refined_goal_points);
 }
 
+
+/**
+ * @brief Test for GetGoalLocationCount()
+ **/
 TEST(test_imageProcessor_5, check_get_goal_location_count)
 {
   int obtained_goal_location_count= img->GetGoalLocationCount();
-  ASSERT_EQ(obtained_goal_location_count, 5);
+
+  ASSERT_EQ(obtained_goal_location_count, num_agents);
 }
 
+/**
+ * @brief Test for TransformToMapCoordinates()
+ **/
 TEST(test_imageProcessor_6, check_transform_to_map_coordinates)
 {
   std::vector<std::vector<double>> expected_transformed_goal_points{
@@ -98,5 +99,13 @@ TEST(test_imageProcessor_6, check_transform_to_map_coordinates)
   auto obtained_transformed_goal_points = img->TransformToMapCoordinates();
 
   ASSERT_EQ(obtained_transformed_goal_points, expected_transformed_goal_points);
+
+}
+
+/**
+ * @brief Test for ImprovedRefineGoalPoints()
+ **/
+TEST(test_imageProcessor_6, check_improve_refined_goal_points)
+{
 
 }

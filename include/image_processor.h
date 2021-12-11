@@ -49,21 +49,33 @@ class ImageProcessor {
     std::vector<std::vector<double>> goal_points_;
     int kernal_size_;
 
-    /**
+   //  /**
+   //   * @brief Define the Goal Points in the image frame
+   //   * 
+   //   * @param binary_image Binary image with the outline of the shape the goal points will define
+   //   */
+   //  void GetGoalPoints(cv::Mat binary_image);
+
+    // /**
+    //  * @brief Remove any excess goal points
+    //  * 
+    //  * @param num_agents number of robots being used in swarm
+    //  */
+    // void RemoveExcessGoalPoints(int num_agents);
+
+ public:
+     /**
      * @brief Define the Goal Points in the image frame
      * 
      * @param binary_image Binary image with the outline of the shape the goal points will define
      */
     void GetGoalPoints(cv::Mat binary_image);
-
     /**
      * @brief Remove any excess goal points
      * 
      * @param num_agents number of robots being used in swarm
      */
     void RemoveExcessGoalPoints(int num_agents);
-
- public:
     /**
      * @brief Construct a new Image Processor object
      * 
@@ -127,7 +139,12 @@ class ImageProcessor {
      * @return std::vector<std::vector<double>> List of goal locations
      */
     std::vector<std::vector<double>> GetGoalPoints();
-
+    /**
+     * @brief Set the kernal size
+     * 
+     * @return void
+     */
+    void SetKernalSize(int kernal_size);
     /**
      * @brief Get the kernal size
      * 

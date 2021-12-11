@@ -32,7 +32,7 @@ ImageProcessor::ImageProcessor(cv::Mat img) {
   this->frame_ = img;
   this->height_ = img.size().height;
   this->width_ = img.size().width;
-  this->kernal_size_ = 499;
+  this->kernal_size_ = 500;
   ROS_INFO_STREAM("Image loaded!");
   ROS_INFO_STREAM(this->height_ << " pixels :Image height");
   ROS_INFO_STREAM(this->width_ << " pixels :Image width");
@@ -58,6 +58,7 @@ void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
         double x_center = j + (kernal_size_  / 2);
         double y_center =  i + (kernal_size_  / 2);
         std::vector<double> center{x_center, y_center};
+        std::cout<< x_center << ',' << y_center << std::endl;
         goal_points_.push_back(center);
       }
     }
@@ -156,6 +157,9 @@ std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
     auto y = points[1];
     double new_x = x/20;
     double new_y = -y/20;
+    std::cout<<x << ": ImageX, " << y << ": ImageY"<<std::endl;
+    std::cout<< new_x << ": MapX, " << new_y << ": MapY"<<std::endl;
+  
     ROS_DEBUG_STREAM(x << ": ImageX, " << y << ": ImageY");
     ROS_DEBUG_STREAM(new_x << ": MapX, " << new_y << ": MapY");
     new_point.push_back(new_x);
@@ -184,6 +188,10 @@ int ImageProcessor::GetGoalLocationCount() {
 
 std::vector<std::vector<double>> ImageProcessor::GetGoalPoints() {
   return goal_points_;
+}
+
+void ImageProcessor::SetKernalSize(int kernal_size) {
+    kernal_size_ = kernal_size;
 }
 
 int ImageProcessor::GetKernalSize() {

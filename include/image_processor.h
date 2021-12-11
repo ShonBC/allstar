@@ -78,7 +78,7 @@ class ImageProcessor {
     cv::Mat GetEdges();
 
     /**
-     * @brief Itterate the kernal size as necessary until the goal points equals the number of robots used in swarm
+     * @brief Iterate the kernal size as necessary until the goal points equals the number of robots used in swarm
      * 
      * @param num_agents Number of robots in the swarm
      * @param binary_image Binary image with the outline of the desired shape
@@ -87,6 +87,16 @@ class ImageProcessor {
     std::vector<std::vector<double>> RefineGoalPoints(int num_agents,
                                                 cv::Mat binary_image);
 
+    /**
+     * @brief With a kernal size of 1x1 pixel, collect goal locations. 
+     * Sort the goal locations and remove excess until num_goals equals the number of robots used in swarm.
+     * 
+     * @param num_agents Number of robots in the swarm
+     * @param binary_image Binary image with the outline of the desired shape
+     * @return std::vector<std::vector<double>> List of goal locations in the image frame
+     */
+    std::vector<std::vector<double>> ImprovedRefineGoalPoints(
+                                        int num_agents, cv::Mat binary_image);
     /**
      * @brief Transforms the Goal Locations into the map frame
      * 

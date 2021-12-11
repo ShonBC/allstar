@@ -1,9 +1,9 @@
 /**
- * @file swarm_server.h
+ * @file improved_main.cpp
  * @author Shon Cortes (scortes3@umd.edu), Sameer Pusegaonkar (sameer@umd.edu), Pooja Kabra (pkabra@terpmail.umd.edu)
- * @brief Class to parse an image and define goal locations in a map.
+ * @brief Improved node that processes an input image and assign goal points to all robots in swarm based off of user input. This implementation uses the ImprovedRefineGoalPoints method of the ImageProcessor Class.
  * @version 0.1
- * @date 2021-11-29
+ * @date 2021-12-11
  * 
  * @copyright Copyright (c) 2021
  *
@@ -25,39 +25,35 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
  */
+#include "../include/swarm_server.h"
+#include "../include/image_processor.h"
 
-#pragma once
+int main(int argc, char** argv) {
+    if (argc <= 1) {
+    ROS_WARN_STREAM
+    ("Enter the # of Robots (robots_) and absolute Image File Path.");
+    return 1;
+    }
 
-#include <ros/ros.h>
-#include <vector>
-#include <string>
+  ros::init(argc, argv, "main");
+  cv::Mat image = cv::imread(argv[2]);
+  auto img = new ImageProcessor(image);
 
-#include <nav_msgs/OccupancyGrid.h>
-#include <std_msgs/Int8.h>
+  cv::Mat bw_img;
+  cv::Mat bin;
 
-#include <tuw_multi_robot_msgs/RobotGoalsArray.h>
+  cv::cvtColor(image, bw_img, cv::COLOR_BGR2GRAY);
+  cv::threshold(bw_img, bin, 100, 255, cv::THRESH_BINARY_INV);
+  cv::imshow("bin", bin);
+  img->ImprovedRefineGoalPoints(std::atoi(argv[1]), bin);
+  auto points = img->TransformToMapCoordinates();
 
-class SwarmServer {
- public:
-    int num_agents;
+  for ( auto i  = 0; i < points.size(); i++ ) {
+    ROS_DEBUG_STREAM("goal points: " << points[i][0] << " " << points[i][1]);
+  }
 
-    /**
-     * @brief Construct a new Swarm Server object
-     * 
-     */
-    SwarmServer() : num_agents{0} {};
-
-    /**
-     * @brief Assign goal positions to each robot in the swarm
-
-        * 
-        * @param goal_points 
-        */
-    void AssignGoals(std::vector<std::vector<double>> goal_points);
-
-    /**
-     * @brief Destroy the Swarm Server object
-     * 
-     */
-    ~SwarmServer() {}
-};
+  SwarmServer swarm;
+  swarm.num_agents = std::atoi(argv[1]);
+  ROS_INFO_STREAM("Kernel size: " << img->GetKernalSize());
+  swarm.AssignGoals(points);
+}

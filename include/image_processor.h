@@ -49,12 +49,12 @@ class ImageProcessor {
     std::vector<std::vector<double>> goal_points_;
     int kernal_size_;
 
-   //  /**
-   //   * @brief Define the Goal Points in the image frame
-   //   * 
-   //   * @param binary_image Binary image with the outline of the shape the goal points will define
-   //   */
-   //  void GetGoalPoints(cv::Mat binary_image);
+    // /**
+    //  * @brief Define the Goal Points in the image frame
+    //  * 
+    //  * @param binary_image Binary image with the outline of the shape the goal points will define
+    //  */
+    // void GetGoalPoints(cv::Mat binary_image);
 
     // /**
     //  * @brief Remove any excess goal points
@@ -144,12 +144,12 @@ class ImageProcessor {
      * 
      * @return void
      */
-    void SetKernalSize(int kernal_size);
-    /**
-     * @brief Get the kernal size
-     * 
-     * @return int Kernal size
-     */
+    // void SetKernalSize(int kernal_size);
+    // /**
+    //  * @brief Get the kernal size
+    //  * 
+    //  * @return int Kernal size
+    //  */
     int GetKernalSize();
 
     /**

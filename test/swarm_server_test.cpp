@@ -30,6 +30,7 @@
 #include <ros/ros.h>
 #include "../include/swarm_server.h"
 
+
 std::vector<std::vector<double>> store_vec;
 void chatterCallback(const tuw_multi_robot_msgs::RobotGoalsArray::ConstPtr& ptr){
 
@@ -43,25 +44,17 @@ void chatterCallback(const tuw_multi_robot_msgs::RobotGoalsArray::ConstPtr& ptr)
     }
 }
 
+
 TEST(test_swarmServer_1, check_assign_goal_points)
 {
     
     ros::NodeHandle n;
     std::vector<std::vector<double>> expected_goal_points{{10,10},{20,25},{35,30}};
     SwarmServer swarm;
+    ros::Subscriber sub = n.subscribe("goals", 1000, chatterCallback);
     swarm.AssignGoals(expected_goal_points);
-    for (int i = 0; i < 3; i++){
-        
-        ros::Subscriber sub = n.subscribe("goals", 1000, chatterCallback);
-        if (store_vec.size() != 0){
-            break;
-        }
-        
-        swarm.AssignGoals(expected_goal_points);
-        ros::spinOnce();
-    }
-    
+    ros::spinOnce();
     auto result = std::equal(expected_goal_points.begin(), expected_goal_points.end(), store_vec.begin());
 
-    EXPECT_EQ(result, true);
+    ASSERT_EQ(result, true);
 }

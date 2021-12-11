@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Initialize arguments -->
+    <arg name="robot_" default="4"/>
+    <arg name="file_path" default=""/>
+    <arg name="world" default="1"/>
+
+    <!-- Open empty world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" if="$(eval arg('world') > 0)">
+        <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/empty.world"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+    <!-- Call swarm.launch to spawn robots in Gazebo -->
+    <include file="$(find allstar)/launch/swarm.launch">
+        <arg name="robot_" value="$(arg robot_)"/>
+        <arg name="world" value="0"/>
+    </include>
+
+    <!-- Call demo.launch to spawn robots in Gazebo -->
+    <include file="$(find tuw_multi_robot_demo)/launch/demo.launch">
+        <arg name="nr_of_robots" default="$(arg robot_)"/> 
+        <arg name="launch_stage" default="false"/>
+    </include>
+
+    <!-- Start allstar node -->
+    <!-- <node pkg="allstar" type="main" name="main" output="screen" args="$(arg robot_) $(arg file_path)">     
+    </node> -->
+
+</launch>

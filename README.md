@@ -25,40 +25,48 @@ All backlog is being tracked [here.](https://docs.google.com/spreadsheets/d/1sR7
 Can be found [here.](https://docs.google.com/document/d/1qceQ_69V6yU-FIa4jNwpUkPDyW1q20VkOy0OK4wDBFg/edit?usp=sharing )
 ***
 
-# Build and Run Instructions for running the protoyupe:
+# Build Instructions:
 
-    git clone https://github.com/ShonBC/allstar
-    git checkout prototype
+    #Clone Allstar package in the src folder of a catkin workspace
+    git clone --branch allstar https://github.com/ShonBC/allstar
 
     #Install tuw package
     sudo apt install libdxflib-dev
-    export ROS_VERSION=melodic 
-    sudo apt install ros-$ROS_VERSION-map-server
-    sudo apt install ros-$ROS_VERSION-stage-ros
-    cd ~/catkin_ws/src
-    git clone --branch $ROS_VERSION git@github.com:tuw-robotics/tuw_geometry.git 
-    git clone git@github.com:tuw-robotics/tuw_msgs.git 
-    cd tuw_msgs
-    git checkout melodic
-    cd ..
-    git clone --branch $ROS_VERSION git@github.com:tuw-robotics/tuw_multi_robot.git 
-    cd tuw_multi_robot
-    mv -v ~/catkin_ws/src/tuw_multi_robot/* ~/catkin_ws/src/
+    sudo apt install ros-melodic-map-server
+    sudo apt install ros-melodic-stage-ros
+    
+    #Clone tuw packages in the src folder of a catkin workspace
+    git clone --branch allstar git@github.com:SamPusegaonkar/tuw_geometry.git 
+    git clone --branch allstar git@github.com:SamPusegaonkar/tuw_msgs.git 
+    git clone --branch allstar git@github.com:SamPusegaonkar/tuw_multi_robot.git 
 
-    #Build the package
-    cd ~/catkin_ws/
+    #Build all packages by running the following in your catkin workspace directory:
     catkin_make
-
-    #Run the package
-    Open 2 terminals
-    cd ~/catkin_ws/
     source devel/setup.bash
-    roslaunch allstar swarm.launch
-    roslaunch tuw_multi_robot_demo demo.launch room:=cave cfg:=robot_2
 
-    #
+# Run Instructions
 
-Generate cppcheck, cpplint and valgrind results and store in a text file in /results directory:
+    #In one terminal run:
+    roslaunch allstar allstar.launch robot_:=NUMBER_OF_ROBOTS
+
+    #By default the allstar.launch file will not record a bag file. To run the nodes and record a bag file run:
+    roslaunch allstar allstar.launch robot_:=NUMBER_OF_ROBOTS ros_bag:=true
+    
+    #WAIT FOR THE FOLLOWING ROS INFO MESSAGES BEFORE CONTINUING:
+    
+    [ INFO] [1639204257.562786518, 10.514000000]: Graph generator: Graph loaded from memory
+    [ INFO] [1639204258.725245747, 11.010000000]: /multi_robot_router: Graph 4754829250626440080
+
+The original ImageProcessor class was designed to refine the list of goal points by sweeping a kernel over the input image and progressively shrinking it until the number of goal points generated equals the number of robots in the swarm. Having larger robot swarms helps increase the resolution of the final swarm formation. For the swarms of 50 robots we tested, the simulation ran slow and the kernel size caused deviations from the desired goal locations. An improved algorithm was developed to improve resolution of the swarm formation at lower robot numbers. The original algorithm is implemented in the "main" executable and the improved algorithm is implemented in the "improved_main" executable.
+
+    #To execute the original algorithm, in a second terminal run:
+    rosrun allstar main NUMBER_OF_ROBOTS FILE_PATH_TO_INPUT_IMAGE
+
+    #Alternatively to execute the improved algorithm, in a second terminal run: 
+    rosrun allstar improved_main NUMBER_OF_ROBOTS FILE_PATH_TO_INPUT_IMAGE    
+
+
+## Generate cppcheck, cpplint and valgrind results and store in a text file in /results directory:
 
     chmod +x run_cpplint.sh
     ./run_cpplint.sh
@@ -69,7 +77,7 @@ Generate cppcheck, cpplint and valgrind results and store in a text file in /res
     chmod +x run_valgrind.sh
     ./run_valgrind.sh
 
-Generate Doxygen files:
+## Generate Doxygen files:
 
     doxygen Doxyfile
 
@@ -150,3 +158,6 @@ References:
 ***
 
 # Know Issues/Bugs:
+1. Larger swarms can spawn robots outside of the generated voronoi graph. Scaling of the input image for the tuw package (tuw_multirobot/tuw_multi_robot_demo/cfg/cave/map.yml) can change the size of the graph however more understanding of how this package works is needed. Ideally we would like to feed in an empty map and we generate a generate a voronoi graph that gives us paths to any point on the map. 
+2. The goals must be published individually to allow for the tuw planner to find paths for our simulation. This means collision avoidance is not being used as the planner does not plan for the paths of all robots at once. It is suspected that this has to to with a parameter within the tuw package that plans for robots with a set radius. Our turtlebots may be larger and cause the planner to not operate as intended. Further research into the planner mechanics may lead to this issue being resolved.
+3. The current implementation may not scale to operate on videos smoothly. Some modifications to the class structure and methods will be needed to transition to working on a video.

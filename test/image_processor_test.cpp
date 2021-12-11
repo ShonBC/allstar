@@ -89,3 +89,14 @@ TEST(test_imageProcessor_5, check_get_goal_location_count)
   int obtained_goal_location_count= img->GetGoalLocationCount();
   EXPECT_EQ(obtained_goal_location_count, 5);
 }
+
+TEST(test_imageProcessor_6, check_transform_to_map_coordinates)
+{
+  std::vector<std::vector<double>> expected_transformed_goal_points{
+    {-8.4,8.4}, {-0.15,8.4}, {8.1,8.4}, {-8.4,0.15}, {-0.15,0.15}};
+
+  auto obtained_transformed_goal_points = img->TransformToMapCoordinates();
+
+  EXPECT_EQ(obtained_transformed_goal_points, expected_transformed_goal_points);
+
+}

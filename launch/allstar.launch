@@ -30,10 +30,12 @@
     <include file="$(find tuw_multi_robot_demo)/launch/demo.launch">
         <arg name="nr_of_robots" default="$(arg robot_)"/> 
         <arg name="launch_stage" default="false"/>
+        <arg name="launch_rviz"  default="false"/>
     </include>
 
-    <!-- Start allstar node -->
-    <!-- <node pkg="allstar" type="main" name="main" output="screen" args="$(arg robot_) $(arg file_path)">     
+    <!-- Start allstar node
+    <node pkg="allstar" type="main" name="main" output="screen" args="$(arg robot_) $(arg file_path)"  
+        launch-prefix="bash -c 'sleep 10.0; $0 $@' ">   
     </node> -->
 
 </launch>

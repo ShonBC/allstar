@@ -31,30 +31,41 @@
 #include "../include/swarm_server.h"
 
 
-std::vector<std::vector<double>> store_vec;
-void chatterCallback(const tuw_multi_robot_msgs::RobotGoalsArray::ConstPtr& ptr){
+std::vector<std::vector<double>> store_vec;  // stores goal points captured on "/goals"
 
+void chatterCallback(const tuw_multi_robot_msgs::RobotGoalsArray::ConstPtr& ptr){
+    /* iterate over robots member*/
     for(auto robot : ptr->robots){
+        /* destinations is of type array, even though we have just one destination for each robot */
         for(auto destination :robot.destinations){
             std::vector<double> temp;
+
             temp.push_back(destination.position.x);
             temp.push_back(destination.position.y);
+            /* push back each goal {xi, yi} */
             store_vec.push_back(temp);
         }
     }
 }
 
-
+/**
+ * @brief Test for AssignGoalPoints()
+ **/
 TEST(test_swarmServer_1, check_assign_goal_points)
 {
     
     ros::NodeHandle n;
     std::vector<std::vector<double>> expected_goal_points{{10,10},{20,25},{35,30}};
     SwarmServer swarm;
-    ros::Subscriber sub = n.subscribe("goals", 1000, chatterCallback);
-    swarm.AssignGoals(expected_goal_points);
-    ros::spinOnce();
-    auto result = std::equal(expected_goal_points.begin(), expected_goal_points.end(), store_vec.begin());
 
+    /* create subscriber that listens to "/goals" */
+    ros::Subscriber sub = n.subscribe("goals", 1000, chatterCallback); 
+
+    /* publish goal points */
+    swarm.AssignGoals(expected_goal_points);
+
+    ros::spinOnce();
+    /* compare expected and obtained vector of goal points */
+    auto result = std::equal(expected_goal_points.begin(), expected_goal_points.end(), store_vec.begin());
     ASSERT_EQ(result, true);
 }

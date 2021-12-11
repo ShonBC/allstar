@@ -38,13 +38,13 @@ cv::Mat countours = img->GetEdges();
 TEST(test_imageProcessor_1, check_get_height)
 {
   int obtained_height= img->GetHeight();
-  EXPECT_EQ(obtained_height, 500);
+  ASSERT_EQ(obtained_height, 500);
 }
 
 TEST(test_imageProcessor_2, check_get_width)
 {
   int obtained_width= img->GetWidth();
-  EXPECT_EQ(obtained_width, 500);
+  ASSERT_EQ(obtained_width, 500);
 }
 
 TEST(test_imageProcessor_3, check_get_kernal_size)
@@ -52,7 +52,7 @@ TEST(test_imageProcessor_3, check_get_kernal_size)
   // int expected_kernal_size = 20;
   // img->SetKernalSize(expected_kernal_size);
   int obtained_kernal_size= img->GetKernalSize(); 
-  EXPECT_EQ(obtained_kernal_size, 499);
+  ASSERT_EQ(obtained_kernal_size, 499);
 }
 
 // TEST(test_imageProcessor_4, check_get_goal_points_)
@@ -75,5 +75,13 @@ TEST(test_imageProcessor_3, check_get_kernal_size)
 //     EXPECT_EQ(result, true);
 // }
 
+TEST(test_imageProcessor_4, check_refine_goal_points)
+{
+  std::vector<std::vector<double>> expected_refined_goal_points{
+    {82,82}, {247,82}, {412,82}, {82,247}, {247,247}};
+  img->RefineGoalPoints(5, countours);
+  std::vector<std::vector<double>> obtained_refined_goal_points = img->GetGoalPoints();
+  EXPECT_EQ(obtained_refined_goal_points, expected_refined_goal_points);
+}
 
 

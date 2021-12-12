@@ -39,12 +39,7 @@ int main(int argc, char** argv) {
   cv::Mat image = cv::imread(argv[2]);
   auto img = new ImageProcessor(image);
 
-  cv::Mat bw_img;
-  cv::Mat bin;
-
-  cv::cvtColor(image, bw_img, cv::COLOR_BGR2GRAY);
-  cv::threshold(bw_img, bin, 100, 255, cv::THRESH_BINARY_INV);
-  cv::imshow("bin", bin);
+  auto bin = img->GetEdges();
   img->ImprovedRefineGoalPoints(std::atoi(argv[1]), bin);
   auto points = img->TransformToMapCoordinates();
 

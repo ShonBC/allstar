@@ -45,8 +45,8 @@ void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
   ROS_DEBUG_STREAM("Received an image!");
   ROS_DEBUG_STREAM(kernal_size_ << ": Current Kernel size");
   // Pass Kernal over image
-  for (int i = 0; i <= height_ - kernal_size_ ; i = i + kernal_size_) {
-    for (int j = 0; j <= width_ -kernal_size_; j = j + kernal_size_) {
+  for (int i = 0; i <=height_ - kernal_size_ ; i = i + kernal_size_) {
+    for (int j = 0; j <=width_ -kernal_size_; j = j + kernal_size_) {
       cv::Mat kern_window = binary_image(cv::Range(i, i+ kernal_size_),
                                           cv::Range(j, j + kernal_size_));
       // ROS_INFO_STREAM("Created a kernal!");
@@ -58,6 +58,7 @@ void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
         double x_center = j + (kernal_size_  / 2);
         double y_center =  i + (kernal_size_  / 2);
         std::vector<double> center{x_center, y_center};
+        std::cout<< x_center << ',' << y_center << std::endl;
         goal_points_.push_back(center);
       }
     }
@@ -76,6 +77,7 @@ void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {
     }
   }
   goal_points_ = new_points;
+  
 }
 
 cv::Mat ImageProcessor::GetEdges() {
@@ -140,6 +142,7 @@ std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
         */
       ROS_DEBUG_STREAM("Greater number of goal locations!");
       RemoveExcessGoalPoints(num_agents);
+      num_goal_locations_ = goal_points_.size();
       return goal_points_;
     } else {
       ROS_DEBUG_STREAM("Equal or lesser number of goal locations!");
@@ -151,8 +154,8 @@ std::vector<std::vector<double>> ImageProcessor::RefineGoalPoints(
     ROS_DEBUG_STREAM("Increased the size of the kernal!");
     RefineGoalPoints(num_agents, binary_image);
   }
-
   ROS_DEBUG_STREAM("Got " << goal_points_.size() << " goal points!");
+  num_goal_locations_ = goal_points_.size();
   return goal_points_;
 }
 
@@ -186,6 +189,7 @@ std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
     std::vector<double>new_point;
     auto x = points[0];
     auto y = points[1];
+
     double new_x = static_cast<double>(x - 250)/20;
     double new_y = static_cast<double>(500 - y - 250) /20;
     ROS_DEBUG_STREAM(x << ": ImageX, " << y << ": ImageY");
@@ -195,6 +199,7 @@ std::vector<std::vector<double>> ImageProcessor::TransformToMapCoordinates() {
     transformed_points_.push_back(new_point);
   }
   ROS_INFO_STREAM("Transformed points from Image frame to Map frame!");
+
   return transformed_points_;
 }
 
@@ -217,6 +222,10 @@ int ImageProcessor::GetGoalLocationCount() {
 std::vector<std::vector<double>> ImageProcessor::GetGoalPoints() {
   return goal_points_;
 }
+
+// void ImageProcessor::SetKernalSize(int kernal_size) {
+//     kernal_size_ = kernal_size;
+// }
 
 int ImageProcessor::GetKernalSize() {
     return kernal_size_;

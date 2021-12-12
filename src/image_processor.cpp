@@ -222,10 +222,6 @@ std::vector<std::vector<double>> ImageProcessor::GetGoalPoints() {
   return goal_points_;
 }
 
-// void ImageProcessor::SetKernalSize(int kernal_size) {
-//     kernal_size_ = kernal_size;
-// }
-
 int ImageProcessor::GetKernalSize() {
     return kernal_size_;
 }

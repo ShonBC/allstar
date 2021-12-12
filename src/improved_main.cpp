@@ -35,17 +35,16 @@ int main(int argc, char** argv) {
   }
 
   ros::init(argc, argv, "main");
+
+  // Process the image
   cv::Mat image = cv::imread(argv[2]);
   auto img = new ImageProcessor(image);
-
   auto bin = img->GetEdges();
   img->ImprovedRefineGoalPoints(std::atoi(argv[1]), bin);
   auto points = img->TransformToMapCoordinates();
+  ROS_INFO_STREAM("Got " << points.size() << " goal points!");
 
-  for ( auto i  = 0; i < points.size(); i++ ) {
-    ROS_DEBUG_STREAM("goal points: " << points[i][0] << " " << points[i][1]);
-  }
-
+  // Publish the goal points to the robots
   SwarmServer swarm;
   swarm.num_agents = std::atoi(argv[1]);
   ROS_INFO_STREAM("Kernel size: " << img->GetKernalSize());

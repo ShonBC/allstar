@@ -41,8 +41,8 @@
  */
 class ImageProcessor {
  private:
-  int height_;
-  int width_;
+  int height_;  // in pixels
+  int width_;   // in pixels
   cv::Mat frame_;
   int num_goal_locations_;
   std::vector<std::vector<double>> goal_points_;

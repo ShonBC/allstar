@@ -1,9 +1,8 @@
 .vscode/
 build/
-src/test.jpg
-src/test2.jpg
-src/test3.jpg
-src/test4.jpg
+test.jpg
+test3.jpg
+test4.jpg
 
 #Doxygen
 html/

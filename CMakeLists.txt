@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   nav_msgs
   tuw_multi_robot_msgs
+  roslib
   OpenCV
   Eigen3
 )

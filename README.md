@@ -1,6 +1,8 @@
 # allstar
 
-[![License: BSD-3](https://img.shields.io/badge/BSD-3)](https://opensource.org/licenses/BSD-3-Clause)
+[![License: BSD-3](https://img.shields.io/badge/License-BSD_3--Clause-green.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg)
+[![GitHub release](https://img.shields.io/github/v/release/shonbc/allstar)](https://github.com/shonbc/allstar/releases/)
 
 
 ---
@@ -25,26 +27,52 @@ All backlog is being tracked [here.](https://docs.google.com/spreadsheets/d/1sR7
 Can be found [here.](https://docs.google.com/document/d/1qceQ_69V6yU-FIa4jNwpUkPDyW1q20VkOy0OK4wDBFg/edit?usp=sharing )
 ***
 
-# Build the package
+# Build Instructions:
+
 Install ROS Melodic [here.](http://wiki.ros.org/melodic/Installation/Ubuntu) 
 
-A catkin workspace is required for this ROS package to run. 
-
-Create a workspace called 'allstar_ws' by following the instructions [here.](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)
+**Required: Create a catkin workspace called 'allstar_ws' in the home directory by following the instructions [here.](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)**
     
-    #Clone this package into your_workspace/src/
-    https://github.com/ShonBC/allstar.git
+    #Clone this package into allstar_ws/src/
+    cd ~/allstar_ws/src/
+    git clone https://github.com/ShonBC/allstar.git
 
+    cd ~/allstar_ws/src/allstar/ 
     chmod +x install_dependencies.sh
     ./install_dependencies.sh
 
     chmod +x install_ros_packages.sh
     ./install_ros_packages.sh  
-    
 
-# Run the package
-    roslaunch allstar allstar.launch robot:= 5 # robot:= can be any number of robots from 0 -50.
-    rosrun allstar main 5 PATH_TO_IMAGE #PATH_TO_IMAGE should be a abosulte path for the image. 
+
+# Run Instructions
+
+    #In one terminal run:
+    cd ~/allstar_ws/
+    source devel/setup.bash
+    roslaunch allstar allstar.launch robot_:=NUMBER_OF_ROBOTS
+
+    #By default the allstar.launch file will not record a bag file. To run the nodes and record a bag file run:
+    roslaunch allstar allstar.launch robot_:=NUMBER_OF_ROBOTS ros_bag:=true
+    
+    #WAIT FOR THE FOLLOWING ROS INFO MESSAGES BEFORE CONTINUING:
+    
+    [ INFO] [1639204257.562786518, 10.514000000]: Graph generator: Graph loaded from memory
+    [ INFO] [1639204258.725245747, 11.010000000]: /multi_robot_router: Graph 4754829250626440080
+
+The original ImageProcessor class was designed to refine the list of goal points by sweeping a kernel over the input image and progressively shrinking it until the number of goal points generated equals the number of robots in the swarm. Having larger robot swarms helps increase the resolution of the final swarm formation. For the swarms of 50 robots we tested, the simulation ran slow and the kernel size caused deviations from the desired goal locations. An improved algorithm was developed to improve resolution of the swarm formation at lower robot numbers. The original algorithm is implemented in the "main" executable and the improved algorithm is implemented in the "improved_main" executable.
+
+    
+    #To execute the original algorithm, in a second terminal run:
+    cd ~/allstar_ws/
+    source devel/setup.bash
+    rosrun allstar main NUMBER_OF_ROBOTS FILE_PATH_TO_INPUT_IMAGE
+
+    #Alternatively to execute the improved algorithm, in a second terminal run: 
+    cd ~/allstar_ws/
+    source devel/setup.bash
+    rosrun allstar improved_main NUMBER_OF_ROBOTS FILE_PATH_TO_INPUT_IMAGE    
+
 
 # Generate cppcheck, cpplint and valgrind results and store in a text file in /results directory:
 
@@ -57,7 +85,8 @@ Create a workspace called 'allstar_ws' by following the instructions [here.](htt
     chmod +x run_valgrind.sh
     ./run_valgrind.sh
 
-Generate Doxygen files:
+## Generate Doxygen files:
+***
 
     doxygen Doxyfile
 
@@ -66,13 +95,13 @@ TO-DO
 
 # UML DIAGRAMS:
 <p align = "center">
-<img src="./docs/uml_diagrams/initial/MarchingBandSwarmActivityDiagram.drawio.png" alt="Logo"/>
+<img src="./docs/uml_diagrams/revised/AllstarActivityDiagram.drawio.png" alt="Logo"/>
 
 <p align = "center"><em>Figure 1. Activity Diagram</em></p>
 </p>
 
 <p align = "center">
-<img src="./docs/uml_diagrams/initial/MarchingBandSwarmClassDiagram.png" alt="Logo"/>
+<img src="./docs/uml_diagrams/revised/AllstarClassDiagram.drawio.png" alt="Logo"/>
 
 <p align = "center"><em>Figure 2. Class Diagram</em></p>
 </p>
@@ -138,3 +167,6 @@ References:
 ***
 
 # Know Issues/Bugs:
+1. Larger swarms can spawn robots outside of the generated voronoi graph. Scaling of the input image for the tuw package (tuw_multirobot/tuw_multi_robot_demo/cfg/cave/map.yml) can change the size of the graph however more understanding of how this package works is needed. Ideally we would like to feed in an empty map and we generate a generate a voronoi graph that gives us paths to any point on the map. 
+2. The goals must be published individually to allow for the tuw planner to find paths for our simulation. This means collision avoidance is not being used as the planner does not plan for the paths of all robots at once. It is suspected that this has to to with a parameter within the tuw package that plans for robots with a set radius. Our turtlebots may be larger and cause the planner to not operate as intended. Further research into the planner mechanics may lead to this issue being resolved.
+3. The current implementation may not scale to operate on videos smoothly. Some modifications to the class structure and methods will be needed to transition to working on a video.

@@ -158,6 +158,9 @@ include_directories(
 add_executable(main src/main.cpp src/swarm_server.cpp src/image_processor.cpp)
 target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${EIGEN3_LIBRARIES})
 
+add_executable(improved_main src/improved_main.cpp src/swarm_server.cpp src/image_processor.cpp)
+target_link_libraries(improved_main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${EIGEN3_LIBRARIES})
+
 #############
 ## Install ##
 #############

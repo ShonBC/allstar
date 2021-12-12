@@ -15,6 +15,9 @@ Project Codename: AllStar
 - [Shon Cortes](https://github.com/shonbc/)
 - [Sameer Pusegaonkar](https://github.com/sampusegaonkar/)
 - [Pooja Kabra](https://github.com/pooja-kabra)
+
+# Slides
+Slides for the presentation of this product idea can be found [here](https://docs.google.com/presentation/d/19LmPWC2t6aZXXt1kGP3tauQSedPetVYB0Q37k9f_3eE/edit?usp=sharing)
  
 # Iteration Updates
 ## Written Proposal:
@@ -160,7 +163,8 @@ The final deliverable would be a ROS package that would take in a B&W image path
 
 ## Work Packages with licenses:
 C++ 11 and above will be the primary language for the entire codebase. We will be utilizing Cmake version 3.2.1 for our build system. For processing our video input, OpenCV version 4.0.0 (Apache 2 license) will be used. Eigen 3 will also be used for linear algebra which uses the MPL2 license. We will also be utilizing ROS Melodic & Gazebo on Ubuntu 18.04 for our multi-robot system which uses the BSD License. This includes tf, odom, roscpp, rospy, nav_msgs, geometry_msgs, std_msgs, nodelet, rostest will use gtest, google mock and turtlebot package. We also plan to use the Tuw_multi_robot package for routing the robots. This package is licensed as BSD. 
-References:
+
+## References:
 
 [1] [NFL Cheerleading](https://en.wikipedia.org/wiki/National_Football_League_Cheerleading#cite_note-2)
 

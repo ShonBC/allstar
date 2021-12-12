@@ -44,6 +44,11 @@ Install ROS Melodic [here.](http://wiki.ros.org/melodic/Installation/Ubuntu)
     chmod +x install_ros_packages.sh
     ./install_ros_packages.sh  
 
+# Build With Unit Tests:
+
+To compile all packages and run the unit tests open a terminal and navigate to the catkin workspace. Run the following command:
+
+    catkin_make run_tests
 
 # Run Instructions
 

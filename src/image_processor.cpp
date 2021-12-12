@@ -4,7 +4,6 @@
  * @brief Class to parse an image and define goal locations in a map.
  * @version 0.1
  * @date 2021-11-29
- * 
  * @copyright Copyright (c) 2021
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

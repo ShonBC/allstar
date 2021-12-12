@@ -4,7 +4,6 @@
  * @brief Improved node that processes an input image and assign goal points to all robots in swarm based off of user input. This implementation uses the ImprovedRefineGoalPoints method of the ImageProcessor Class.
  * @version 0.1
  * @date 2021-12-11
- * 
  * @copyright Copyright (c) 2021
  *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -29,11 +28,11 @@
 #include "../include/image_processor.h"
 
 int main(int argc, char** argv) {
-    if (argc <= 1) {
-    ROS_WARN_STREAM
-    ("Enter the # of Robots (robots_) and absolute Image File Path.");
-    return 1;
-    }
+  if (argc <= 1) {
+  ROS_WARN_STREAM
+  ("Enter the # of Robots (robots_) and absolute Image File Path.");
+  return 1;
+  }
 
   ros::init(argc, argv, "main");
   cv::Mat image = cv::imread(argv[2]);

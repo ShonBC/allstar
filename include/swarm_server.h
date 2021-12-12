@@ -4,7 +4,6 @@
  * @brief Class to parse an image and define goal locations in a map.
  * @version 0.1
  * @date 2021-11-29
- * 
  * @copyright Copyright (c) 2021
  *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -34,30 +33,25 @@
 
 #include <nav_msgs/OccupancyGrid.h>
 #include <std_msgs/Int8.h>
-
 #include <tuw_multi_robot_msgs/RobotGoalsArray.h>
 
 class SwarmServer {
  public:
-    int num_agents;
+  int num_agents;
 
-    /**
-     * @brief Construct a new Swarm Server object
-     * 
-     */
-    SwarmServer() : num_agents{0} {};
+  /**
+   * @brief Construct a new Swarm Server object
+  */
+  SwarmServer() : num_agents{0} {};
 
-    /**
-     * @brief Assign goal positions to each robot in the swarm
+  /**
+   * @brief Assign goal positions to each robot in the swarm 
+   * @param goal_points 
+   */
+  void AssignGoals(std::vector<std::vector<double>> goal_points);
 
-        * 
-        * @param goal_points 
-        */
-    void AssignGoals(std::vector<std::vector<double>> goal_points);
-
-    /**
-     * @brief Destroy the Swarm Server object
-     * 
-     */
-    ~SwarmServer() {}
+  /**
+   * @brief Destroy the Swarm Server object
+   */
+  ~SwarmServer() {}
 };

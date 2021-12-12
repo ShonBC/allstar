@@ -93,9 +93,10 @@ The original ImageProcessor class was designed to refine the list of goal points
     chmod +x run_valgrind.sh
     ./run_valgrind.sh
 
-## Generate Doxygen files:
+## Generated Doxygen files are present in [here](https://github.com/ShonBC/allstar/tree/development/docs/html):
 ***
-
+    cd ~/allstar_ws/src/
+    doxygen -g 
     doxygen Doxyfile
 
 # Example Output:

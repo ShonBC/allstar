@@ -31,7 +31,7 @@
 #include "../include/image_processor.h"
 
 
-cv::Mat image = cv::imread("/home/poo/Downloads/test.jpg");
+cv::Mat image = cv::imread("/home/poo/Downloads/heart.png");
 auto img = new ImageProcessor(image);
 cv::Mat countours = img->GetEdges();
 int num_agents = 5;
@@ -77,11 +77,24 @@ TEST(test_imageProcessor_4, check_refine_goal_points)
   ASSERT_EQ(obtained_refined_goal_points, expected_refined_goal_points);
 }
 
+/**
+ * @brief Test for GetGoalPoints()
+ **/
+TEST(test_imageProcessor_5, check_get_goal_points)
+{
+  std::vector<std::vector<double>> expected_goal_points{
+    {82,82}, {247,82}, {412,82}, {82,247}, {247,247}};
+
+  std::vector<std::vector<double>> obtained_goal_points = img->GetGoalPoints();
+  
+  ASSERT_EQ(obtained_goal_points, expected_goal_points);
+}
+
 
 /**
  * @brief Test for GetGoalLocationCount()
  **/
-TEST(test_imageProcessor_5, check_get_goal_location_count)
+TEST(test_imageProcessor_6, check_get_goal_location_count)
 {
   int obtained_goal_location_count= img->GetGoalLocationCount();
 
@@ -91,7 +104,7 @@ TEST(test_imageProcessor_5, check_get_goal_location_count)
 /**
  * @brief Test for TransformToMapCoordinates()
  **/
-TEST(test_imageProcessor_6, check_transform_to_map_coordinates)
+TEST(test_imageProcessor_7, check_transform_to_map_coordinates)
 {
   std::vector<std::vector<double>> expected_transformed_goal_points{
     {-8.4,8.4}, {-0.15,8.4}, {8.1,8.4}, {-8.4,0.15}, {-0.15,0.15}};
@@ -105,7 +118,14 @@ TEST(test_imageProcessor_6, check_transform_to_map_coordinates)
 /**
  * @brief Test for ImprovedRefineGoalPoints()
  **/
-TEST(test_imageProcessor_6, check_improve_refined_goal_points)
+TEST(test_imageProcessor_8, check_improve_refined_goal_points)
 {
+  std::vector<std::vector<double>> expected_refined_goal_points{
+    {18,132}, {134,224}, {211,157}, {288,336}, {365,171}};
+
+  img->ImprovedRefineGoalPoints(num_agents, countours);
+  std::vector<std::vector<double>> obtained_refined_goal_points = img->GetGoalPoints();
+  
+  ASSERT_EQ(obtained_refined_goal_points, expected_refined_goal_points);
 
 }

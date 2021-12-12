@@ -58,7 +58,7 @@ void ImageProcessor::GetGoalPoints(cv::Mat binary_image) {
         double x_center = j + (kernal_size_  / 2);
         double y_center =  i + (kernal_size_  / 2);
         std::vector<double> center{x_center, y_center};
-        std::cout<< x_center << ',' << y_center << std::endl;
+        ROS_DEBUG_STREAM(x_center << "," << y_center);
         goal_points_.push_back(center);
       }
     }
@@ -77,7 +77,6 @@ void ImageProcessor::RemoveExcessGoalPoints(int num_agents) {
     }
   }
   goal_points_ = new_points;
-  
 }
 
 cv::Mat ImageProcessor::GetEdges() {

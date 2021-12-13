@@ -1,1 +1,8 @@
 .vscode/
+build/
+test.jpg
+test3.jpg
+test4.jpg
+
+#Doxygen
+latex/

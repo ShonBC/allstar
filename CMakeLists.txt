@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   nav_msgs
   tuw_multi_robot_msgs
+  roslib
   OpenCV
   Eigen3
 )
@@ -158,6 +159,9 @@ include_directories(
 add_executable(main src/main.cpp src/swarm_server.cpp src/image_processor.cpp)
 target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${EIGEN3_LIBRARIES})
 
+add_executable(improved_main src/improved_main.cpp src/swarm_server.cpp src/image_processor.cpp)
+target_link_libraries(improved_main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${EIGEN3_LIBRARIES})
+
 #############
 ## Install ##
 #############
@@ -205,11 +209,21 @@ target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${EIGEN3_LIBR
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_allstar.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+# catkin_add_gtest(allstar test/image_processor_test.cpp)
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -pthread")
+  add_rostest_gtest(main_test
+    test/main_test.test
+    test/main_test.cpp
+    test/image_processor_test.cpp
+    test/swarm_server_test.cpp
+    src/image_processor.cpp
+  src/swarm_server.cpp
+  )
+  target_link_libraries(main_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${EIGEN3_LIBRARIES})
+  # add_dependencies(main allstar_test ${catkin_EXPORTED_TARGETS})
+endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-

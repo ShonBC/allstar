@@ -1,6 +1,8 @@
 # allstar
 
-[![License: BSD-3](https://img.shields.io/badge/BSD-3)](https://opensource.org/licenses/BSD-3-Clause)
+[![License: BSD-3](https://img.shields.io/badge/License-BSD_3--Clause-green.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg)
+[![GitHub release](https://img.shields.io/github/v/release/shonbc/allstar)](https://github.com/shonbc/allstar/releases/)
 
 
 ---
@@ -13,52 +15,77 @@ Project Codename: AllStar
 - [Shon Cortes](https://github.com/shonbc/)
 - [Sameer Pusegaonkar](https://github.com/sampusegaonkar/)
 - [Pooja Kabra](https://github.com/pooja-kabra)
+
+# Slides
+Slides for the presentation of this product idea can be found [here](https://docs.google.com/presentation/d/19LmPWC2t6aZXXt1kGP3tauQSedPetVYB0Q37k9f_3eE/edit?usp=sharing)
  
 # Iteration Updates
 ## Written Proposal:
 A 2 Page Written proposal can be found [here](docs/proposal/ENPM808X_Final_Project_Proposal.pdf)
 
 ## Product Backlog:
-All backlog is being tracked [here.](https://docs.google.com/spreadsheets/d/1sR7KOjVB8bDje8J2QfeGQo_Tc-OPGAuAFRhpCgdOBeA/edit#gid=0)
+All backlogs are being tracked [here.](https://docs.google.com/spreadsheets/d/1sR7KOjVB8bDje8J2QfeGQo_Tc-OPGAuAFRhpCgdOBeA/edit#gid=0)
 
 ## Iteration Planning Meetings & Scrum Meeting Notes:
 Can be found [here.](https://docs.google.com/document/d/1qceQ_69V6yU-FIa4jNwpUkPDyW1q20VkOy0OK4wDBFg/edit?usp=sharing )
+
+## Final Presentation Video:
+A video of the final presentation can be found [here.](https://youtu.be/uAbTbhdqozU)
 ***
 
-# Build and Run Instructions for running the protoyupe:
+# Build Instructions:
 
-    git clone https://github.com/ShonBC/allstar
-    git checkout prototype
+Install ROS Melodic [here.](http://wiki.ros.org/melodic/Installation/Ubuntu) 
 
-    #Install tuw package
-    sudo apt install libdxflib-dev
-    export ROS_VERSION=melodic 
-    sudo apt install ros-$ROS_VERSION-map-server
-    sudo apt install ros-$ROS_VERSION-stage-ros
-    cd ~/catkin_ws/src
-    git clone --branch $ROS_VERSION git@github.com:tuw-robotics/tuw_geometry.git 
-    git clone git@github.com:tuw-robotics/tuw_msgs.git 
-    cd tuw_msgs
-    git checkout melodic
-    cd ..
-    git clone --branch $ROS_VERSION git@github.com:tuw-robotics/tuw_multi_robot.git 
-    cd tuw_multi_robot
-    mv -v ~/catkin_ws/src/tuw_multi_robot/* ~/catkin_ws/src/
+**Required: Create a catkin workspace called 'allstar_ws' in the home directory by following the instructions [here.](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)**
+    
+    #Clone this package into allstar_ws/src/
+    cd ~/allstar_ws/src/
+    git clone https://github.com/ShonBC/allstar.git
 
-    #Build the package
-    cd ~/catkin_ws/
-    catkin_make
+    cd ~/allstar_ws/src/allstar/ 
+    chmod +x install_dependencies.sh
+    ./install_dependencies.sh
 
-    #Run the package
-    Open 2 terminals
-    cd ~/catkin_ws/
+    chmod +x install_ros_packages.sh
+    ./install_ros_packages.sh  
+
+# Build With Unit Tests:
+
+To compile all packages and run the unit tests open a terminal and navigate to the catkin workspace. Run the following command:
+
+    catkin_make run_tests
+
+# Run Instructions
+
+    #In one terminal run:
+    cd ~/allstar_ws/
     source devel/setup.bash
-    roslaunch allstar swarm.launch
-    roslaunch tuw_multi_robot_demo demo.launch room:=cave cfg:=robot_2
+    roslaunch allstar allstar.launch robot_:=NUMBER_OF_ROBOTS
 
-    #
+    #By default the allstar.launch file will not record a bag file. To run the nodes and record a bag file run:
+    roslaunch allstar allstar.launch robot_:=NUMBER_OF_ROBOTS ros_bag:=true
+    
+    #WAIT FOR THE FOLLOWING ROS INFO MESSAGES BEFORE CONTINUING:
+    
+    [ INFO] [1639204257.562786518, 10.514000000]: Graph generator: Graph loaded from memory
+    [ INFO] [1639204258.725245747, 11.010000000]: /multi_robot_router: Graph 4754829250626440080
 
-Generate cppcheck, cpplint and valgrind results and store in a text file in /results directory:
+The original ImageProcessor class was designed to refine the list of goal points by sweeping a kernel over the input image and progressively shrinking it until the number of goal points generated equals the number of robots in the swarm. Having larger robot swarms helps increase the resolution of the final swarm formation. For the swarms of 50 robots we tested, the simulation ran slow and the kernel size caused deviations from the desired goal locations. An improved algorithm was developed to improve resolution of the swarm formation at lower robot numbers. The original algorithm is implemented in the "main" executable and the improved algorithm is implemented in the "improved_main" executable.
+
+    
+    #To execute the original algorithm, in a second terminal run:
+    cd ~/allstar_ws/
+    source devel/setup.bash
+    rosrun allstar main NUMBER_OF_ROBOTS FILE_PATH_TO_INPUT_IMAGE
+
+    #Alternatively to execute the improved algorithm, in a second terminal run: 
+    cd ~/allstar_ws/
+    source devel/setup.bash
+    rosrun allstar improved_main NUMBER_OF_ROBOTS FILE_PATH_TO_INPUT_IMAGE    
+
+
+# Generate cppcheck, cpplint and valgrind results and store in a text file in /results directory:
 
     chmod +x run_cpplint.sh
     ./run_cpplint.sh
@@ -69,22 +96,48 @@ Generate cppcheck, cpplint and valgrind results and store in a text file in /res
     chmod +x run_valgrind.sh
     ./run_valgrind.sh
 
-Generate Doxygen files:
-
+## Generated Doxygen files are present in [here](https://github.com/ShonBC/allstar/tree/development/docs/html):
+***
+    cd ~/allstar_ws/src/
+    doxygen -g 
     doxygen Doxyfile
 
 # Example Output:
-TO-DO
+<p align="center"> <img src="https://user-images.githubusercontent.com/12711480/145737220-bc304200-3dab-4778-887d-20363e784ac1.gif" alt="Logo"/> </p> 
+<p align = "center"><em>Example of RefineGoalPoints implementation</em></p>
+</p>
+
+<p align="center"> <img src="https://user-images.githubusercontent.com/12711480/145737407-c8100a5a-d987-4ac6-bb34-9613ce773185.gif " alt="Logo"/> </p> 
+<p align = "center"><em>Example of ImprovedRefineGoalPoints implementation</em></p>
+</p>
+
+<p align="center"> <img src="https://user-images.githubusercontent.com/12711480/145737387-219f38f6-180c-4de1-821d-11b1ed35a7fe.gif" alt="Logo"/> </p> 
+<p align = "center"><em>Example of ImprovedRefineGoalPoints implementation</em></p>
+</p>
+
+<p align="center"> <img src="https://user-images.githubusercontent.com/12711480/145737545-2fa1b58c-20d9-4ad3-b1ae-aa7deef998e1.gif " alt="Logo"/> </p> 
+<p align = "center"><em>Example of ImprovedRefineGoalPoints implementation</em></p>
+</p>
+
+![allstar_test2_20_robots_ex_2](https://user-images.githubusercontent.com/79477080/145736986-9a032d8f-57b6-4431-94bb-9b2c4ae5fd50.png)
+<p align = "center"><em>Example of RefineGoalPoints implementation</em></p>
+</p>
+
+
+![allstar_test3_20_robots](https://user-images.githubusercontent.com/79477080/145737019-a4ca060c-f110-4297-a8af-ed60ac811b5b.png) 
+<p align = "center"><em>Example of ImprovedRefineGoalPoints implementation</em></p>
+</p>
+
 
 # UML DIAGRAMS:
 <p align = "center">
-<img src="./docs/uml_diagrams/initial/MarchingBandSwarmActivityDiagram.drawio.png" alt="Logo"/>
+<img src="./docs/uml_diagrams/revised/AllstarActivityDiagram.drawio.png" alt="Logo"/>
 
 <p align = "center"><em>Figure 1. Activity Diagram</em></p>
 </p>
 
 <p align = "center">
-<img src="./docs/uml_diagrams/initial/MarchingBandSwarmClassDiagram.png" alt="Logo"/>
+<img src="./docs/uml_diagrams/revised/AllstarClassDiagram.drawio.png" alt="Logo"/>
 
 <p align = "center"><em>Figure 2. Class Diagram</em></p>
 </p>
@@ -138,7 +191,8 @@ The final deliverable would be a ROS package that would take in a B&W image path
 
 ## Work Packages with licenses:
 C++ 11 and above will be the primary language for the entire codebase. We will be utilizing Cmake version 3.2.1 for our build system. For processing our video input, OpenCV version 4.0.0 (Apache 2 license) will be used. Eigen 3 will also be used for linear algebra which uses the MPL2 license. We will also be utilizing ROS Melodic & Gazebo on Ubuntu 18.04 for our multi-robot system which uses the BSD License. This includes tf, odom, roscpp, rospy, nav_msgs, geometry_msgs, std_msgs, nodelet, rostest will use gtest, google mock and turtlebot package. We also plan to use the Tuw_multi_robot package for routing the robots. This package is licensed as BSD. 
-References:
+
+## References:
 
 [1] [NFL Cheerleading](https://en.wikipedia.org/wiki/National_Football_League_Cheerleading#cite_note-2)
 
@@ -150,3 +204,6 @@ References:
 ***
 
 # Know Issues/Bugs:
+1. Larger swarms can spawn robots outside of the generated voronoi graph. Scaling of the input image for the tuw package (tuw_multirobot/tuw_multi_robot_demo/cfg/cave/map.yml) can change the size of the graph however more understanding of how this package works is needed. Ideally we would like to feed in an empty map and we generate a generate a voronoi graph that gives us paths to any point on the map. 
+2. The goals must be published individually to allow for the tuw planner to find paths for our simulation. This means collision avoidance is not being used as the planner does not plan for the paths of all robots at once. It is suspected that this has to to with a parameter within the tuw package that plans for robots with a set radius. Our turtlebots may be larger and cause the planner to not operate as intended. Further research into the planner mechanics may lead to this issue being resolved.
+3. The current implementation may not scale to operate on videos smoothly. Some modifications to the class structure and methods will be needed to transition to working on a video.

@@ -1,4 +1,9 @@
 Done processing ./include/image_processor.h
 Done processing ./include/swarm_server.h
 Done processing ./src/image_processor.cpp
+Done processing ./src/improved_main.cpp
+Done processing ./src/main.cpp
 Done processing ./src/swarm_server.cpp
+Done processing ./test/image_processor_test.cpp
+Done processing ./test/main_test.cpp
+Done processing ./test/swarm_server_test.cpp

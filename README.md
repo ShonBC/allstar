@@ -24,10 +24,13 @@ Slides for the presentation of this product idea can be found [here](https://doc
 A 2 Page Written proposal can be found [here](docs/proposal/ENPM808X_Final_Project_Proposal.pdf)
 
 ## Product Backlog:
-All backlog is being tracked [here.](https://docs.google.com/spreadsheets/d/1sR7KOjVB8bDje8J2QfeGQo_Tc-OPGAuAFRhpCgdOBeA/edit#gid=0)
+All backlogs are being tracked [here.](https://docs.google.com/spreadsheets/d/1sR7KOjVB8bDje8J2QfeGQo_Tc-OPGAuAFRhpCgdOBeA/edit#gid=0)
 
 ## Iteration Planning Meetings & Scrum Meeting Notes:
 Can be found [here.](https://docs.google.com/document/d/1qceQ_69V6yU-FIa4jNwpUkPDyW1q20VkOy0OK4wDBFg/edit?usp=sharing )
+
+## Final Presentation Video:
+A video of the final presentation can be found [here.](https://youtu.be/uAbTbhdqozU)
 ***
 
 # Build Instructions:
@@ -99,7 +102,19 @@ The original ImageProcessor class was designed to refine the list of goal points
     doxygen Doxyfile
 
 # Example Output:
-TO-DO
+<p align="center"> <img src="https://user-images.githubusercontent.com/12711480/145737220-bc304200-3dab-4778-887d-20363e784ac1.gif" alt="Logo"/> </p> 
+
+<p align="center"> <img src="https://user-images.githubusercontent.com/12711480/145737407-c8100a5a-d987-4ac6-bb34-9613ce773185.gif " alt="Logo"/> </p> 
+
+<p align="center"> <img src="https://user-images.githubusercontent.com/12711480/145737387-219f38f6-180c-4de1-821d-11b1ed35a7fe.gif" alt="Logo"/> </p> 
+
+<p align="center"> <img src="https://user-images.githubusercontent.com/12711480/145737545-2fa1b58c-20d9-4ad3-b1ae-aa7deef998e1.gif " alt="Logo"/> </p> 
+
+![allstar_test2_20_robots_ex_2](https://user-images.githubusercontent.com/79477080/145736986-9a032d8f-57b6-4431-94bb-9b2c4ae5fd50.png)
+
+
+![allstar_test3_20_robots](https://user-images.githubusercontent.com/79477080/145737019-a4ca060c-f110-4297-a8af-ed60ac811b5b.png) 
+
 
 # UML DIAGRAMS:
 <p align = "center">
